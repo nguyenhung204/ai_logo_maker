@@ -15,7 +15,7 @@ const Hero = () => {
       <div className="flex gap-6 w-full max-w-2xl mt-10">
         <input
           placeholder={Lookup.InputTitlePlaceholder}
-          class="p-3 border rounded-md w-full shadow-md"
+          className="p-3 border rounded-md w-full shadow-md"
         />
         <Button className="w-full p-6">Get Started</Button>
       </div>
