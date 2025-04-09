@@ -20,19 +20,18 @@ export default{
     pricingOption : [
         {
             title: 'Free',
-            icon: '/free.png', // Add your free plan icon here
+            icon: '/free.png',
             features: [
                 '⚫ Generate unlimited logos for free',
                 '⚫ Longer wait times',
                 '⚫ Wait time: 30 seconds to 3 minutes',
                 '⚫ Limited Design Options and Quality',
-                '⚫ Slow (Not Recommended)'
             ],
             button:'Generate Free'
         },
         {
             title: 'Premium',
-            icon: '/thunder.png', // Add your premium plan icon here
+            icon: '/thunder.png', 
             features: [
                 '⚫ Generate unlimited logos',
                 '⚫ Shorter wait times',
@@ -40,7 +39,7 @@ export default{
                 '⚫ Only 5 Credits',
                 
             ],
-            button:'Generate Free'
+            button:'Buy it for $2.99/mon'
         }
     ],
 }

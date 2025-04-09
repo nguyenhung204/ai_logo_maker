@@ -7,6 +7,7 @@ import LogoDesc from './_components/LogoDesc'
 import LogoDesigns from './_components/LogoDesigns'
 import LogoIdea from './_components/LogoIdea'
 import LogoPalette from './_components/LogoPalette'
+import PricingModal from './_components/PricingModal'
 
 
 function CreateLogo() {
@@ -27,6 +28,7 @@ function CreateLogo() {
           step == 3 ? <LogoPalette onHandleInputChange={(v) => onHandleInputChange('palette', v)} formData = {formData} /> :
             step == 4 ? <LogoDesigns onHandleInputChange={(v) => onHandleInputChange('design', v)} formData = {formData}/> :
               step == 5 ? <LogoIdea onHandleInputChange={(v) => onHandleInputChange('idea', v)} formData = {formData}/> :
+                step == 6 ? <PricingModal onHandleInputChange={(v) => onHandleInputChange('pricing', v)} formData = {formData}/> :
                 null}
 
       <div className='flex items-center justify-between mt-10'>

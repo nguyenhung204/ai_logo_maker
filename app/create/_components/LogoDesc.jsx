@@ -11,8 +11,7 @@ function LogoDesc({ onHandleInputChange, formData }) {
 
       <input type="text" placeholder={Lookup.InputTitlePlaceholder}
         className='p-4 border rounded-lg mt-5 w-full'
-        // defaultValue={formData.desc} 
-        value = {formData?.desc}
+        value = {formData?.desc || ""}
         onChange={(e) => onHandleInputChange(e.target.value)} />
     </div>
   )
