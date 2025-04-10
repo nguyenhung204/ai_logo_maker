@@ -1,36 +1,45 @@
-import React, { useState } from 'react'
-import HeadingDescription from './HeadingDescription'
-import Lookup from '@/app/_data/Lookup'
-import Colors from '@/app/_data/Colors'
+import React, { useState } from "react";
+import HeadingDescription from "./HeadingDescription";
+import Lookup from "@/app/_data/Lookup";
+import Colors from "@/app/_data/Colors";
 
-function LogoPalette({onHandleInputChange, formData}) {
+function LogoPalette({ onHandleInputChange, formData }) {
   const [selectedOption, setSelectedOption] = useState(formData?.palette);
   return (
-    <div className='my-10'>
+    <div className="my-10">
       <HeadingDescription
-      title={Lookup.LogoColorPaletteTitle}
-      description={Lookup.LogoColorPaletteDesc}/>
+        title={Lookup.LogoColorPaletteTitle}
+        description={Lookup.LogoColorPaletteDesc}
+      />
 
-      <div className='grid grid-cols-2 md:grid-cols-3 gap-5 mt-5'>
-        {Colors.map((palette, index) =>(
-          <div className={`flex p-1 cursor-pointer ${selectedOption==palette.name&&'border-2 rounded-lg border-primary'}`} key={index}>
-            {palette?.colors.map((color, index)=>(
-              <div className='h-24 w-full' 
-              key={index}
-              onClick={() => {setSelectedOption(palette.name);
-                onHandleInputChange(palette.name)
-              }}
-              style={{
-                backgroundColor: color
-              }}>
-
-              </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-5">
+        {Colors.map((palette, index) => (
+          <div
+            className={`flex p-1 border-2 cursor-pointer transition-transform duration-300 hover:-translate-y-3 ${
+              selectedOption == palette.name
+                ? "rounded-lg border-primary"
+                : "border-transparent"
+            }`}
+            key={index}
+          >
+            {palette?.colors.map((color, index) => (
+              <div
+                className="h-24 w-full"
+                key={index}
+                onClick={() => {
+                  setSelectedOption(palette.name);
+                  onHandleInputChange(palette.name);
+                }}
+                style={{
+                  backgroundColor: color,
+                }}
+              ></div>
             ))}
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default LogoPalette
+export default LogoPalette;
