@@ -1,7 +1,13 @@
-import React from "react";
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import { UserDetailContext } from "../_context/UserDetailContext";
 
 const GenerateLogo = () => {
-  return <div>GenerateLogo</div>;
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+
+  return <div>
+    Generate
+  </div>;
 };
 
 export default GenerateLogo;

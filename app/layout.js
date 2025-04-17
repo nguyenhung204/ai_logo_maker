@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html>
         <body className={`${host_Grotesk.className}`}>
           <Provider>{children}</Provider>
         </body>
