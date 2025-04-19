@@ -42,8 +42,10 @@ const GenerateLogo = () => {
       setLoading(true);
       const result = await axios.post("/api/ai-logo-model", { prompt: PROMPT });
 
-      const images = result.data?.images || [];
-      setImageUrls(images);
+      const image = result.data?.image;
+      if (image) {
+        setImageUrls([image]);
+      }
     } catch (error) {
       console.error("Error generating logo:", error);
     } finally {
@@ -54,8 +56,8 @@ const GenerateLogo = () => {
   return (
     <div className="p-10 border rounded-xl mx-auto my-12 min-h-[500px]">
       <HeadingDescription
-        title={loading ? Lookup.LoadingWaitDesc : Lookup.LogoOutputTitle}
-        description={loading ? Lookup.LoadingWaitTitle : Lookup.LogoOutputDesc}
+        title={loading ? Lookup.LoadingWaitTitle : Lookup.LogoOutputTitle}
+        description={loading ? Lookup.LoadingWaitDesc : Lookup.LogoOutputDesc}
       ></HeadingDescription>
 
       {loading ? (
@@ -64,7 +66,7 @@ const GenerateLogo = () => {
         </div>
       ) : (
         imageUrls.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-12">
+          <div className="text-center my-12">
             {imageUrls.map((url, index) => (
               <Image
                 key={index}
