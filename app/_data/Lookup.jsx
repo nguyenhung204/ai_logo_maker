@@ -21,8 +21,8 @@ export default {
   LogoPricingModelTitle: "Select your AI Model Plan",
   LogoPricingModelDesc: "Generate Unlimted Fast Logo with your fav model",
   LoadingWaitDesc:
-    "✨ Please wait a moment while we work our magic to bring your logo to life.",
-  LoadingWaitTitle: "Your logo is being created",
+    "Please wait a moment while we work our magic to bring your logo to life.",
+  LoadingWaitTitle: "✨ Your logo is being created",
   LogoOutputTitle: "🎨 Your AI Generated Logo",
   LogoOutputDesc:
     "Your logo is ready to be downloaded and used for your next project.",
