@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎨 AI Logo Maker
 
-## Getting Started
+Một ứng dụng tạo logo tự động sử dụng trí tuệ nhân tạo (AI), được xây dựng bằng **Next.js**, **React**, và tích hợp **Gemini API** kết hợp với **Flux AI Text-to-Image Generator**. Người dùng chỉ cần nhập mô tả, hệ thống sẽ tạo ra một logo độc đáo phù hợp với nhu cầu thiết kế của họ.
 
-First, run the development server:
+---
+
+## 👨‍💻 Thành viên nhóm
+
+- **Nguyễn Văn Hùng**
+- **Huỳnh Đức Phú**
+
+---
+
+## 🚀 Tính năng chính
+
+- ✅ Tạo logo bằng mô tả văn bản (prompt)
+- 🎯 Tùy chỉnh phong cách và mô tả logo theo yêu cầu người dùng
+- 📷 Hiển thị và tải về hình ảnh logo được tạo từ AI
+- ♻️ Lưu lịch sử các logo đã tạo
+- 🧠 Sử dụng trí tuệ nhân tạo để sinh ảnh sáng tạo từ văn bản
+
+---
+
+## 🧰 Công nghệ sử dụng
+
+- **ReactJS**
+- **Next.js**
+- **Gemini API** (Google AI)
+- **Flux AI Text-to-Image Generator**
+- **Tailwind CSS**
+- **Axios**
+
+---
+
+## 📷 Demo
+
+![Logo Demo 1](image.png)
+
+![Logo Demo 2](image-1.png)
+
+---
+
+## 📦 Cài đặt và chạy dự án
 
 ```bash
+# Cài dependencies
+npm install
+
+# Chạy ứng dụng
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Template API Key (.env)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+# Gemini API từ Google AI
+GEMINI_API_KEY=
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 
-## Learn More
+# Firebase API Key
+NEXT_PUBLIC_FIREBASE_API_KEY=
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# RapidAPI Key
+RAPIDAPI_KEY=
+```
