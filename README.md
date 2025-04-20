@@ -34,9 +34,9 @@ Một ứng dụng tạo logo tự động sử dụng trí tuệ nhân tạo (A
 
 ## 📷 Demo
 
-![Logo Demo 1](./public/image.png)
+![Logo Demo 1](./public/imgs-for-carousel-and-readme/img-1.png)
 
-![Logo Demo 2](./public/image-1.png)
+![Logo Demo 2](./public/imgs-for-carousel-and-readme/img-2.png)
 
 ---
 
