@@ -28,7 +28,9 @@ const Provider = ({ children }) => {
     <div>
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
         <Header />
-        <div className="px-10 lg:px-32 xl:px-48 2xl:px-56">{children}</div>
+        <div className="px-10 lg:px-32 xl:px-48 2xl:px-56 my-12">
+          {children}
+        </div>
         <Footer />
       </UserDetailContext.Provider>
     </div>
