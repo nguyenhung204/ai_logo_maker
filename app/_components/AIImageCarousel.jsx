@@ -82,7 +82,7 @@ export function AIImageCarousel({
   }, [isAutoPlaying, currentIndex]);
 
   return (
-    <section className="w-full py-12 bg-gray-50">
+    <section className="w-full py-16 bg-gray-100 my-8">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-primary">{title}</h2>

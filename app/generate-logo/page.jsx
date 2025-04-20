@@ -4,7 +4,6 @@ import { UserDetailContext } from "../_context/UserDetailContext";
 import Prompt from "../_data/Prompt";
 import axios from "axios";
 import Image from "next/image";
-import { Heading } from "lucide-react";
 import HeadingDescription from "../create/_components/HeadingDescription";
 import Lookup from "../_data/Lookup";
 import LoadingSpinner from "../_components/LoadingSpinner";

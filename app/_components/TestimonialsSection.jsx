@@ -30,10 +30,10 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-100 my-8">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl font-bold mb-4 text-primary">
             What Our Customers Say
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -66,12 +66,11 @@ export function TestimonialsSection() {
               <div className="flex items-center">
                 <div className="relative h-12 w-12 rounded-full overflow-hidden mr-4">
                   <Image
-                    src={
-                      testimonial.image || "/placeholder.svg?height=48&width=48"
-                    }
+                    src={testimonial.image}
                     alt={testimonial.name}
-                    fill
-                    className="object-cover"
+                    width={40}
+                    height={40}
+                    className="w-full h-full"
                   />
                 </div>
                 <div>
