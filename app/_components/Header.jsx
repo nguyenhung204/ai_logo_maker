@@ -24,8 +24,8 @@ export default function Header() {
   const navItems = [
     { title: "Home", href: "/" },
     { title: "Logo Generator", href: "/create" },
-    { title: "About", href: "/about" },
     { title: "Buy Credits", href: "/buy-credits" },
+    { title: "About", href: "/about" },
   ];
 
   // Hàm tạo auth component cho desktop
