@@ -16,8 +16,8 @@ function TeamMemberCard({ name, studentId, role, bio, imageUrl }) {
         <Image
           src={imageUrl || "/placeholder.svg"}
           alt={name}
-          width={400}
-          height={400}
+          width={300}
+          height={300}
           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
         />
       </div>

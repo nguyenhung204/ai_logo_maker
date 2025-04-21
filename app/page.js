@@ -7,7 +7,9 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <AIImageCarousel />
+      <div className="hidden sm:block">
+        <AIImageCarousel />
+      </div>
       <FeaturesSection />
       <TestimonialsSection />
     </div>

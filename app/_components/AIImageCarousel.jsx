@@ -24,17 +24,11 @@ const aiGeneratedImages = [
   },
   {
     id: 4,
-    src: "/imgs-for-carousel-and-readme/img-1.png",
-    alt: "AI generated logo for a tech company",
-  },
-
-  {
-    id: 5,
     src: "/imgs-for-carousel-and-readme/img-3.png",
     alt: "AI generated logo for a tech company",
   },
   {
-    id: 6,
+    id: 5,
     src: "/imgs-for-carousel-and-readme/img-6.png",
     alt: "AI generated logo for a restaurant",
   },
