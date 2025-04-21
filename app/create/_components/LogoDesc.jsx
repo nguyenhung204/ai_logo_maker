@@ -20,7 +20,7 @@ function LogoDesc({ onHandleInputChange, formData }) {
 
       <input 
         type="text" 
-        placeholder={Lookup.InputTitlePlaceholder}
+        placeholder="Describe your logo idea"
         className='p-4 border rounded-lg mt-5 w-full'
         value={desc}
         onChange={handleChange} 
