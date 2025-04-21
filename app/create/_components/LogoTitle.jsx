@@ -8,14 +8,14 @@ import { useSearchParams } from "next/navigation";
 function LogoTitleContent({ onHandleInputChange, formData }) {
   const searchParams = useSearchParams();
   const [title, setTitle] = useState(formData?.title || "");
-  
+
   useEffect(() => {
     const initialTitle = searchParams.get("title") ?? "";
     if (initialTitle && !formData?.title) {
       setTitle(initialTitle);
       onHandleInputChange(initialTitle);
     }
-  }, [searchParams, onHandleInputChange, formData]);
+  }, []);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -39,7 +39,6 @@ function LogoTitleContent({ onHandleInputChange, formData }) {
     </div>
   );
 }
-
 
 function LogoTitleFallback() {
   return (
