@@ -5,6 +5,7 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { UserDetailContext } from "./_context/UserDetailContext";
 import { Footer } from "./_components/Footer";
+import FloatingBubblesLayer from "./_components/FloatingBubblesLayer";
 
 const Provider = ({ children }) => {
   const { user } = useUser();
@@ -27,6 +28,7 @@ const Provider = ({ children }) => {
   return (
     <div>
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+        <FloatingBubblesLayer />
         <Header />
         <div className="px-10 lg:px-32 xl:px-48 2xl:px-56 my-12">
           {children}

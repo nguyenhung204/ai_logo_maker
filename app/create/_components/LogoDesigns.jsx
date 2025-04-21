@@ -29,8 +29,8 @@ function LogoDesigns({ onHandleInputChange, formData }) {
             <Image
               src={design?.image}
               alt={design?.title}
-              width={300}
-              height={200}
+              width={150}
+              height={150}
               className="w-full rounded-xl object-cover"
             />
             <h2 className="text-md lg:text-xl text-primary text-center mt-2">
