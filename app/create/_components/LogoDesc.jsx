@@ -1,18 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeadingDescription from './HeadingDescription'
 import Lookup from '@/app/_data/Lookup'
 
 function LogoDesc({ onHandleInputChange, formData }) {
+  const [desc, setDesc] = useState(formData?.desc || "");
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setDesc(newValue);
+    onHandleInputChange(newValue);
+  };
+
   return (
     <div className='my-10'>
       <HeadingDescription
         title={Lookup.LogoDescTitle}
-        description={Lookup.LogoDescDesc} />
+        description={Lookup.LogoDescDesc} 
+      />
 
-      <input type="text" placeholder={Lookup.InputTitlePlaceholder}
+      <input 
+        type="text" 
+        placeholder={Lookup.InputTitlePlaceholder}
         className='p-4 border rounded-lg mt-5 w-full'
-        value = {formData?.desc || ""}
-        onChange={(e) => onHandleInputChange(e.target.value)} />
+        value={desc}
+        onChange={handleChange} 
+      />
     </div>
   )
 }

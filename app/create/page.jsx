@@ -89,14 +89,16 @@ function CreateLogo() {
       })()}
 
       <div className="flex items-center justify-between mt-10">
-        {step != 1 && (
+        {step > 1 && (
           <Button onClick={() => setStep(step - 1)} variant="outline">
             <ArrowLeft /> Previous
           </Button>
         )}
+        {step < 6 && (
         <Button onClick={() => setStep(step + 1)}>
           <ArrowRight /> Countinue
         </Button>
+        )}
       </div>
     </div>
   );

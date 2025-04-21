@@ -1,7 +1,6 @@
 "use client";
 
 export default function ProgressBar({ currentStep, totalSteps, stepLabels }) {
-  // Tính phần trăm tiến độ
   const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
   return (
