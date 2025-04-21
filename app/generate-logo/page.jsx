@@ -57,7 +57,7 @@ const GenerateLogo = () => {
       <HeadingDescription
         title={loading ? Lookup.LoadingWaitTitle : Lookup.LogoOutputTitle}
         description={loading ? Lookup.LoadingWaitDesc : Lookup.LogoOutputDesc}
-      ></HeadingDescription>
+      />
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[500px]">
@@ -67,14 +67,23 @@ const GenerateLogo = () => {
         imageUrls.length > 0 && (
           <div className="text-center my-12">
             {imageUrls.map((url, index) => (
-              <Image
-                key={index}
-                src={url}
-                alt={`Generated Logo ${index + 1}`}
-                width={512}
-                height={512}
-                className="w-full h-auto rounded"
-              />
+              <div key={index} className="mb-6">
+                <Image
+                  src={url}
+                  alt={`Generated Logo ${index + 1}`}
+                  width={512}
+                  height={512}
+                  unoptimized
+                  className="mx-auto h-auto rounded"
+                />
+                <a
+                  href={url}
+                  download={`${formData.title}.png`}
+                  className="inline-block mt-3 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition"
+                >
+                  Download
+                </a>
+              </div>
             ))}
           </div>
         )
