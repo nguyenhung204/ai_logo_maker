@@ -96,7 +96,7 @@ function CreateLogo() {
         )}
         {step < 6 && (
         <Button onClick={() => setStep(step + 1)}>
-          <ArrowRight /> Countinue
+          <ArrowRight /> Continue
         </Button>
         )}
       </div>
