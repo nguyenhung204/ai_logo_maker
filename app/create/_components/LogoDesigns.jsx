@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeadingDescription from "./HeadingDescription";
 import Lookup from "@/app/_data/Lookup";
-import LogoDesig from "@/app/_data/LogoDesig";
+import LogoDesignSample from "@/app/_data/LogoDesignSample";
 import Image from "next/image";
 
 function LogoDesigns({ onHandleInputChange, formData }) {
@@ -13,7 +13,7 @@ function LogoDesigns({ onHandleInputChange, formData }) {
         description={Lookup.LogoDesignDesc}
       />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-10 mt-10">
-        {LogoDesig.map((design, index) => (
+        {LogoDesignSample.map((design, index) => (
           <div
             key={index}
             onClick={() => {
