@@ -7,60 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sparkles, Zap, Star, Gem } from "lucide-react";
+import CreditPackages from "../_data/CreditPackages";
+import Link from "next/link";
 
 export default function BuyCreditsPage() {
-  const creditPackages = [
-    {
-      id: 1,
-      name: "Basic Package",
-      credits: 5,
-      price: "50,000₫",
-      image: "/buy-credits-logo-imgs/basic-package-logo.png",
-      popular: false,
-      color: "from-blue-500 to-cyan-300",
-      icon: Zap,
-      buttonColor:
-        "bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600",
-    },
-    {
-      id: 2,
-      name: "Standard Package",
-      credits: 20,
-      price: "180,000₫",
-      image: "/buy-credits-logo-imgs/standard-package-logo.png",
-      popular: true,
-      color: "from-violet-500 to-purple-300",
-      icon: Star,
-      buttonColor:
-        "bg-gradient-to-r from-violet-600 to-purple-500 hover:from-violet-700 hover:to-purple-600",
-    },
-    {
-      id: 3,
-      name: "Advanced Package",
-      credits: 50,
-      price: "400,000₫",
-      image: "/buy-credits-logo-imgs/advanced-package-logo.png",
-      popular: false,
-      color: "from-pink-500 to-rose-300",
-      icon: Gem,
-      buttonColor:
-        "bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600",
-    },
-    {
-      id: 4,
-      name: "Professional Package",
-      credits: 100,
-      price: "750,000₫",
-      image: "/buy-credits-logo-imgs/professional-package-logo.png",
-      popular: false,
-      color: "from-orange-500 to-amber-300",
-      icon: Gem,
-      buttonColor:
-        "bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600",
-    },
-  ];
-
   return (
     <div className="container mx-auto py-12 px-4 bg-gradient-to-b from-slate-50/50 to-slate-100 min-h-screen">
       <div className="text-center mb-12">
@@ -74,7 +24,7 @@ export default function BuyCreditsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {creditPackages.map((pkg) => {
+        {CreditPackages.map((pkg) => {
           const Icon = pkg.icon;
           return (
             <Card
@@ -135,12 +85,17 @@ export default function BuyCreditsPage() {
               </CardContent>
 
               <CardFooter className="pt-2 pb-6 relative z-10">
-                <Button
-                  className={`w-full text-lg py-6 border-none shadow-lg ${pkg.buttonColor} text-white transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl`}
-                  size="lg"
+                <Link
+                  href={`/buy-credits/payment/?package=${pkg.id}`}
+                  className="mx-auto w-fit"
                 >
-                  Buy Now
-                </Button>
+                  <Button
+                    className={`w-full text-lg py-6 border-none shadow-lg ${pkg.buttonColor} text-white transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl`}
+                    size="lg"
+                  >
+                    Buy Now
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           );
