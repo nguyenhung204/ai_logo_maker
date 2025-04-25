@@ -1,9 +1,11 @@
 import { AILogoPrompt } from "@/config/AiModel";
+import { db } from "@/config/FirebaseConfig";
 import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { prompt } = await req.json();
+  const { prompt,email, title, desc } = await req.json();
 
   try {
     // 🧠 Gọi Gemini tạo prompt
@@ -29,13 +31,21 @@ export async function POST(req) {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       data: encodedParams,
-      responseType: "arraybuffer", 
+      responseType: "arraybuffer",
     });
 
 
     const buffer = Buffer.from(response.data, "binary");
-    const base64Image = `data:image/webp;base64,${buffer.toString("base64")}`;
-
+    const base64Image = `data:image/png;base64,${buffer.toString("base64")}`;
+    try{
+        await setDoc(doc(db, "users", email, "logos", Date.now().toString()),{
+          image:base64Image,
+          title:title,
+          desc:desc
+        })
+    }catch(e){
+        console.log(e)
+    }
     return NextResponse.json({ image: base64Image });
   } catch (e) {
     console.error("Error generating image:", e);

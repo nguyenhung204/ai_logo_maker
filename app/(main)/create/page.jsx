@@ -24,7 +24,7 @@ function CreateLogo() {
   const totalSteps = 6;
   const stepLabels = [
     "Title",
-    "Vision",
+    "Description",
     "Palette",
     "Design",
     "Idea",
