@@ -63,6 +63,7 @@ const GenerateLogo = () => {
         email: userDetail?.email,
         title: formData?.title,
         desc : formData?.desc,
+        userCredits : userDetail?.credits
       });
       console.log(result?.data);
       const image = result.data?.image;

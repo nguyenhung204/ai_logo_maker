@@ -1,11 +1,11 @@
 import { AILogoPrompt } from "@/config/AiModel";
 import { db } from "@/config/FirebaseConfig";
 import axios from "axios";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { prompt,email, title, desc } = await req.json();
+  const { prompt,email, title, desc, userCredits } = await req.json();
 
   try {
     // 🧠 Gọi Gemini tạo prompt
@@ -46,6 +46,11 @@ export async function POST(req) {
     }catch(e){
         console.log(e)
     }
+
+    const docRef = doc(db, "users", email)
+    await updateDoc(docRef, {
+      credits : Number(userCredits) - 1
+    })
     return NextResponse.json({ image: base64Image });
   } catch (e) {
     console.error("Error generating image:", e);
