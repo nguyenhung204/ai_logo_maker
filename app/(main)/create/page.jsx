@@ -31,6 +31,26 @@ function CreateLogo() {
     "Pricing",
   ];
 
+  // Kiểm tra xem bước hiện tại đã điền đầy đủ thông tin chưa
+  const isCurrentStepValid = () => {
+    if (!formData) return false;
+
+    switch (step) {
+      case 1:
+        return formData.title && formData.title.trim() !== '';
+      case 2:
+        return formData.desc && formData.desc.trim() !== '';
+      case 3:
+        return formData.palette;
+      case 4:
+        return formData.design;
+      case 5:
+        return formData.idea;
+      default:
+        return true;
+    }
+  };
+
   return (
     <div className="mt-28 p-10 border rounded-xl mx-auto bg-gray-100/50">
       <ProgressBar
@@ -95,7 +115,11 @@ function CreateLogo() {
           </Button>
         )}
         {step < 6 && (
-        <Button onClick={() => setStep(step + 1)}>
+        <Button 
+          onClick={() => setStep(step + 1)} 
+          disabled={!isCurrentStepValid()}
+          className={`${!isCurrentStepValid() ? 'cursor-not-allowed opacity-50' : ''}`}
+        >
           <ArrowRight /> Continue
         </Button>
         )}
