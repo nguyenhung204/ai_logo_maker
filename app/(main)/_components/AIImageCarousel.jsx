@@ -76,7 +76,7 @@ export function AIImageCarousel({
   }, [isAutoPlaying, currentIndex]);
 
   return (
-    <section className="w-full py-16 bg-gray-100/50 my-8">
+    <section className="w-full py-16 bg-gray-100/50 my-8 rounded-xl">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-primary">{title}</h2>
@@ -133,7 +133,7 @@ export function AIImageCarousel({
           </Button>
         </div>
 
-        <div className="flex justify-center mt-6 space-x-2">
+        {/* <div className="flex justify-center mt-6 space-x-2">
           {Array.from({ length: totalImages - visibleImages + 1 }).map(
             (_, index) => (
               <button
@@ -147,7 +147,7 @@ export function AIImageCarousel({
               />
             )
           )}
-        </div>
+        </div> */}
       </div>
     </section>
   );

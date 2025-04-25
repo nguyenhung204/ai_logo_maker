@@ -6,34 +6,34 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 export function FAQSection() {
   const faqs = [
     {
-      question: "How does the AI Logo Maker work?",
+      question: "Who created AI Logo Maker?",
       answer:
-        "AI Logo Maker uses advanced artificial intelligence technology to generate logos based on the information you provide. Simply enter your brand name, choose your preferred style and color, and our AI will create multiple unique logo designs for you to choose from.",
+        "AI Logo Maker was founded in 2025 by a team of AI enthusiasts and design professionals who wanted to make professional logo creation accessible to everyone. Our diverse team combines expertise in artificial intelligence, user experience design, and brand development.",
     },
     {
-      question: "Do I own the logo after creating it?",
+      question: "What is the mission of AI Logo Maker?",
       answer:
-        "Yes, with Pro and Enterprise plans, you will have full ownership of the generated logo. With the Free plan, you can use the logo for non-commercial personal purposes.",
+        "Our mission is to democratize brand design by leveraging cutting-edge AI technology. We believe that every business, regardless of size or budget, deserves access to high-quality, unique logo designs that effectively represent their brand identity.",
     },
     {
-      question: "Can I edit the logo after it is created?",
+      question: "How is AI Logo Maker different from other logo creators?",
       answer:
-        "Yes, you can edit the logo at any time. We offer easy-to-use editing tools that let you change colors, fonts, layout, and other design elements.",
+        "Unlike template-based logo creators, our platform uses advanced AI algorithms trained on thousands of professional logo designs. This allows us to generate truly unique logos tailored to your specific brand attributes rather than modified templates.",
     },
     {
-      question: "In which formats can I download the logo?",
+      question: "Does AI Logo Maker work with designers?",
       answer:
-        "Depending on your plan, you can download the logo in various formats. The Free plan supports PNG, while the Pro and Enterprise plans support PNG, JPG, SVG, PDF, and more.",
+        "Absolutely! We have a network of professional designers who review and refine our AI algorithms. For Enterprise customers, we also offer custom design services where our in-house designers work directly with your team to perfect your brand identity.",
     },
     {
-      question: "Can I cancel my subscription anytime?",
+      question: "What technologies power AI Logo Maker?",
       answer:
-        "Yes, you can cancel your subscription at any time. There are no long-term contracts. You can upgrade, downgrade, or cancel your plan from your account page.",
+        "Our platform is built on state-of-the-art machine learning algorithms and neural networks. We've developed proprietary AI models specifically optimized for logo design, trained on vast datasets of professional design work with careful attention to aesthetic principles.",
     },
     {
-      question: "Can I use the logo for commercial purposes?",
+      question: "How can I contact the team behind AI Logo Maker?",
       answer:
-        "Yes, with Pro and Enterprise plans, you can use the logo for commercial purposes. The Free plan only supports non-commercial personal use.",
+        "You can reach our team through the Contact page on our website, or directly via email at support@ailogomaker.com. We're always happy to answer questions, receive feedback, or discuss potential collaborations.",
     },
   ];
 
@@ -44,14 +44,14 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-16 bg-gray-100/50 my-12">
+    <section className="py-16 bg-gray-100/50 my-12 rounded-xl">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4 text-primary">
-            Frequently Asked Questions
+            About Our Company
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Find answers to the most common questions about AI Logo Maker.
+            Learn more about the team and technology behind AI Logo Maker.
           </p>
         </div>
 

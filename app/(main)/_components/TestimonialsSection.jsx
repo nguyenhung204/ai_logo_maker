@@ -24,13 +24,13 @@ export function TestimonialsSection() {
       role: "Freelance Designer",
       image: "/imgs-for-testimonials-section/david-nguyen.png",
       content:
-        "Even with my design experience, I'm impressed by AI Logo Maker’s capabilities. I now use it to quickly generate initial concepts.",
+        "Even with my design experience, I'm impressed by AI Logo Maker's capabilities. I now use it to quickly generate initial concepts.",
       rating: 4,
     },
   ];
 
   return (
-    <section className="py-16 bg-gray-100/50 my-8">
+    <section className="py-16 bg-gray-100/50 my-8 rounded-xl">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4 text-primary">
@@ -64,13 +64,13 @@ export function TestimonialsSection() {
                 "{testimonial.content}"
               </p>
               <div className="flex items-center">
-                <div className="relative h-12 w-12 rounded-full overflow-hidden mr-4">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
                   <Image
                     src={testimonial.image}
                     alt={testimonial.name}
-                    width={40}
-                    height={40}
-                    className="w-full h-full"
+                    fill
+                    sizes="48px"
+                    className="object-cover"
                   />
                 </div>
                 <div>
