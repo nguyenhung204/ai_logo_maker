@@ -20,7 +20,7 @@ function LogoDesigns({ onHandleInputChange, formData }) {
               setSelectedOption(design.title);
               onHandleInputChange(design);
             }}
-            className={`cursor-pointer border-2 transition-transform duration-300 hover:-translate-y-10 ${
+            className={`cursor-pointer border-2 transition-transform duration-300 hover:scale-105 ${
               selectedOption == design.title
                 ? "rounded-lg border-primary"
                 : "border-transparent"
@@ -33,7 +33,7 @@ function LogoDesigns({ onHandleInputChange, formData }) {
               height={150}
               className="w-full rounded-xl object-cover"
             />
-            <h2 className="text-md lg:text-xl text-primary text-center mt-2">
+            <h2 className="text-md lg:text-xl text-primary text-center mt-2 font-bold">
               {design.title}
             </h2>
           </div>

@@ -13,13 +13,13 @@ const GenerateLogo = () => {
   const { userDetail } = useContext(UserDetailContext);
   const [formData, setFormData] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
-  const [loading, setLoading] = useState(true); // Start with loading state
+  const [loading, setLoading] = useState(true); 
   const [initialLoadAttempted, setInitialLoadAttempted] = useState(false);
   const router = useRouter();
 
   // 1 : Load data
   useEffect(() => {
-    if (typeof window != undefined && userDetail?.email ) {
+    if (typeof window !== "undefined" && userDetail?.email ) {
       try {
         const storage = localStorage.getItem("formData");
         if (storage) {
@@ -45,30 +45,26 @@ const GenerateLogo = () => {
   }, [formData, initialLoadAttempted]);
 
   const generateAILogo = async () => {
-    if (
-      !formData?.title ||
-      !formData?.desc ||
-      !formData?.palette ||
-      !formData?.design?.title
-    ) {
-      console.error("Missing required form data");
-      setLoading(false);
-      return;
-    }
 
-    const PROMPT = Prompt.LOGO_PROMPT.replace("{logoTitle}", formData.title)
-      .replace("{logoDesc}", formData.desc || "")
-      .replace("{logoColor}", formData.palette || "")
-      .replace("{logoDesign}", formData.design?.title || "")
+    const PROMPT = Prompt.LOGO_PROMPT
+      .replace("{logoTitle}", formData?.title)
+      .replace("{logoDesc}", formData?.desc )
+      .replace("{logoColor}", formData?.palette)
+      .replace("{logoDesign}", formData?.design?.title)
       .replace("{logoIdea}", formData.idea || "Let AI Select the best idea")
-      .replace("{logoPrompt}", formData.design?.prompt || "");
+      .replace("{logoPrompt}", formData?.design?.prompt);
+
+      console.log(PROMPT)
 
     try {
       setLoading(true);
       const result = await axios.post("/api/ai-logo-model", {
         prompt: PROMPT,
+        email: userDetail?.email,
+        title: formData?.title,
+        desc : formData?.desc,
       });
-
+      console.log(result?.data);
       const image = result.data?.image;
       if (image) {
         setImageUrls([image]);

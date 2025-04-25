@@ -1,8 +1,9 @@
 "use client"
 import React, { useContext, useEffect, useState } from 'react'
 import { UserDetailContext } from '../../_context/UserDetailContext'
-import { collection } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import Image from 'next/image'
+import { db } from '@/config/FirebaseConfig'
 
 function LogoList() {
   const { userDetail, setUserDetail } = useContext(UserDetailContext)

@@ -18,8 +18,8 @@ export default {
   LogoColorPaletteTitle: "Choose Your Color Palette",
   LogoColorPaletteDesc:
     "Pick the colors that reflect your brands personality and create a lasting impression.",
-  LogoPricingModelTitle: "Select your AI Model Plan",
-  LogoPricingModelDesc: "Generate Unlimted Fast Logo with your fav model",
+  LogoPricingModelTitle: "Let's generate your logo now",
+  LogoPricingModelDesc: "Buy credits to unlimited",
   LoadingWaitDesc:
     "Please wait a moment while we work our magic to bring your logo to life.",
   LoadingWaitTitle: "✨ Your logo is being created",
@@ -28,26 +28,26 @@ export default {
     "Your logo is ready to be downloaded and used for your next project.",
   pricingOption: [
     {
-      title: "Free",
-      icon: "/free.png",
+      title: "Generation with Credits",
+      icon: "/coin.png",
       features: [
-        "⚫ Generate unlimited logos for free",
-        "⚫ Longer wait times",
-        "⚫ Wait time: 30 seconds to 3 minutes",
-        "⚫ Limited Design Options and Quality",
+        "⚫ You have 5 free credits to try",
+        "⚫ Use credits to generate logo",
+        "⚫ Wait time: 10 seconds to 1 minutes",
+        "⚫ Buy more credits anytime",
       ],
-      button: "Generate Free",
+      button: "Generate with Credits",
     },
-    {
-      title: "Premium",
-      icon: "/thunder.png",
-      features: [
-        "⚫ Generate unlimited logos",
-        "⚫ Shorter wait times",
-        "⚫ Wait time: Less than 10 seconds",
-        "⚫ Only 5 Credits",
-      ],
-      button: "Buy it for $2.99/mon",
-    },
+    // {
+    //   title: "Premium",
+    //   icon: "/thunder.png",
+    //   features: [
+    //     "⚫ Generate unlimited logos",
+    //     "⚫ Shorter wait times",
+    //     "⚫ Wait time: Less than 10 seconds",
+    //     "⚫ Only 5 Credits",
+    //   ],
+    //   button: "Buy it for $2.99/mon",
+    // },
   ],
 };
