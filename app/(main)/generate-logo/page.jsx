@@ -26,7 +26,7 @@ const GenerateLogo = () => {
           setFormData(JSON.parse(storage));
         } else {
           // Back về tạo mới nếu không có formData
-          router.push('/create');
+          router.push("/create");
         }
       } catch (error) {
         console.error("Error loading form data:", error);
@@ -46,7 +46,12 @@ const GenerateLogo = () => {
   }, [formData, initialLoadAttempted]);
 
   const generateAILogo = async () => {
-    if (!formData?.title || !formData?.desc || !formData?.palette || !formData?.design?.title) {
+    if (
+      !formData?.title ||
+      !formData?.desc ||
+      !formData?.palette ||
+      !formData?.design?.title
+    ) {
       console.error("Missing required form data");
       setLoading(false);
       return;
@@ -61,7 +66,9 @@ const GenerateLogo = () => {
 
     try {
       setLoading(true);
-      const result = await axios.post("/api/ai-logo-model", { prompt: PROMPT });
+      const result = await axios.post("/api/ai-logo-model", {
+        prompt: PROMPT,
+      });
 
       const image = result.data?.image;
       if (image) {
@@ -109,8 +116,10 @@ const GenerateLogo = () => {
         </div>
       ) : (
         <div className="text-center my-12 p-8 border rounded-lg bg-gray-50">
-          <p className="text-lg text-gray-600">No logo has been generated yet.</p>
-          <button 
+          <p className="text-lg text-gray-600">
+            No logo has been generated yet.
+          </p>
+          <button
             onClick={generateAILogo}
             className="mt-4 px-6 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition"
           >

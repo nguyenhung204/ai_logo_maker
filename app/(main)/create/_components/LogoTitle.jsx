@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
 import HeadingDescription from "./HeadingDescription";
-import Lookup from "@/app/_data/Lookup";
+import Lookup from "@/app/(main)/_data/Lookup";
 import { useSearchParams } from "next/navigation";
 
 // Create a component that safely uses useSearchParams

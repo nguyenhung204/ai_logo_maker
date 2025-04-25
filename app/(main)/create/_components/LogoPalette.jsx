@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeadingDescription from "./HeadingDescription";
-import Lookup from "@/app/_data/Lookup";
-import Colors from "@/app/_data/Colors";
+import Lookup from "@/app/(main)/_data/Lookup";
+import Colors from "@/app/(main)/_data/Colors";
 
 function LogoPalette({ onHandleInputChange, formData }) {
   const [selectedOption, setSelectedOption] = useState(formData?.palette);
