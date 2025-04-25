@@ -19,7 +19,6 @@ export async function POST(req){
             await setDoc(doc(db, "users", userEmail),{
                 ...data
             })
-
             return NextResponse.json(data, { status: 200  });
         }
     }catch (error) {

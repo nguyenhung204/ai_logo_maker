@@ -114,7 +114,6 @@ export function Sidebar({ isOpen, onClose }) {
             <Package className="h-4 w-4" />
             <span>Products</span>
           </Link>
-
           <Link
             href="#"
             className="flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground hover:text-foreground"

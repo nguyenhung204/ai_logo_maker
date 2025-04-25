@@ -8,7 +8,6 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-background">
-      {/* Overlay mobile */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 md:hidden"
