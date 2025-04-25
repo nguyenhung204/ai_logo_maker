@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import HeadingDescription from './HeadingDescription'
-import Lookup from '@/app/_data/Lookup'
+import React, { useState } from "react";
+import HeadingDescription from "./HeadingDescription";
+import Lookup from "@/app/(main)/_data/Lookup";
 
 function LogoDesc({ onHandleInputChange, formData }) {
   const [desc, setDesc] = useState(formData?.desc || "");
@@ -12,21 +12,21 @@ function LogoDesc({ onHandleInputChange, formData }) {
   };
 
   return (
-    <div className='my-10'>
+    <div className="my-10">
       <HeadingDescription
         title={Lookup.LogoDescTitle}
-        description={Lookup.LogoDescDesc} 
+        description={Lookup.LogoDescDesc}
       />
 
-      <input 
-        type="text" 
+      <input
+        type="text"
         placeholder="Describe your logo idea"
-        className='p-4 border rounded-lg mt-5 w-full'
+        className="p-4 border rounded-lg mt-5 w-full"
         value={desc}
-        onChange={handleChange} 
+        onChange={handleChange}
       />
     </div>
-  )
+  );
 }
 
-export default LogoDesc
+export default LogoDesc;

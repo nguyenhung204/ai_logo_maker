@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import HeadingDescription from "./HeadingDescription";
-import Lookup from "@/app/_data/Lookup";
+import Lookup from "@/app/(main)/_data/Lookup";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { SignInButton, useUser } from "@clerk/nextjs";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeadingDescription from "./HeadingDescription";
-import Lookup from "@/app/_data/Lookup";
-import LogoDesignSample from "@/app/_data/LogoDesignSample";
+import Lookup from "@/app/(main)/_data/Lookup";
+import LogoDesignSample from "@/app/(main)/_data/LogoDesignSample";
 import Image from "next/image";
 
 function LogoDesigns({ onHandleInputChange, formData }) {

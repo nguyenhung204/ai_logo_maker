@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import HeadingDescription from "./HeadingDescription";
-import Lookup from "@/app/_data/Lookup";
+import Lookup from "@/app/(main)/_data/Lookup";
 import axios from "axios";
-import Prompt from "@/app/_data/Prompt";
+import Prompt from "@/app/(main)/_data/Prompt";
 import { Loader2Icon } from "lucide-react";
 
 function LogoIdea({ formData, onHandleInputChange }) {
