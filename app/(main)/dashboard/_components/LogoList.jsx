@@ -33,7 +33,7 @@ function LogoList() {
                <h2 className='text-center text-lg font-medium mt-2'>{logo?.title}</h2>
                <p className='text-sm text-gray-500 text-center'>{logo?.desc}</p>
             </div>
-        )): [1, 2, 3, 4, 5, 6].map((item, index) => (
+        )): [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
             <div key={index} className='bg-slate-200 animate-pulse rounded-xl w-full h-[200px]'>
 
             </div>
