@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { UserDetailContext } from "../_context/UserDetailContext";
 import Prompt from "../_data/Prompt";
 import axios from "axios";
@@ -8,16 +8,18 @@ import HeadingDescription from "../create/_components/HeadingDescription";
 import Lookup from "../_data/Lookup";
 import LoadingSpinner from "../_components/LoadingSpinner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const GenerateLogo = () => {
-  const { userDetail } = useContext(UserDetailContext);
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [formData, setFormData] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   const [loading, setLoading] = useState(true); 
-  const [initialLoadAttempted, setInitialLoadAttempted] = useState(false);
+  const [logoGenerated, setLogoGenerated] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  // 1 : Load data
   useEffect(() => {
     if (typeof window !== "undefined" && userDetail?.email ) {
       try {
@@ -30,22 +32,24 @@ const GenerateLogo = () => {
         }
       } catch (error) {
         console.error("Error loading form data:", error);
-      } finally {
-        setInitialLoadAttempted(true);
       }
     }
-  }, [userDetail, router]);
+  }, [userDetail?.email, router]);
 
   useEffect(() => {
-    if (formData?.title && initialLoadAttempted) {
-      generateAILogo();
-    } else if (initialLoadAttempted) {
-      setLoading(false);
+    if (formData?.title && !logoGenerated) {
+      // Kiểm tra credits trước khi tạo logo
+      if (!userDetail || userDetail.credits <= 0) {
+        setError("Bạn không có đủ credits để tạo logo");
+        setLoading(false);
+      } else {
+        generateAILogo();
+        setLogoGenerated(true);
+      }
     }
-  }, [formData, initialLoadAttempted]);
+  },[formData, logoGenerated, userDetail]);
 
   const generateAILogo = async () => {
-
     const PROMPT = Prompt.LOGO_PROMPT
       .replace("{logoTitle}", formData?.title)
       .replace("{logoDesc}", formData?.desc )
@@ -54,7 +58,7 @@ const GenerateLogo = () => {
       .replace("{logoIdea}", formData.idea || "Let AI Select the best idea")
       .replace("{logoPrompt}", formData?.design?.prompt);
 
-      console.log(PROMPT)
+    console.log(PROMPT)
 
     try {
       setLoading(true);
@@ -70,23 +74,62 @@ const GenerateLogo = () => {
       if (image) {
         setImageUrls([image]);
       }
+
+      if (result.data?.updatedUserDetails) {
+        setUserDetail(prevState => ({
+          ...prevState,
+          ...result.data.updatedUserDetails
+        }));
+      }
     } catch (error) {
       console.error("Error generating logo:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("Đã có lỗi xảy ra khi tạo logo. Vui lòng thử lại sau.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleTryAgain = () => {
+    // Kiểm tra credits trước khi thử lại
+    if (!userDetail || userDetail.credits <= 0) {
+      setError("Bạn không có đủ credits để tạo logo");
+      return;
+    }
+    
+    setError(null);
+    generateAILogo();
+    setLogoGenerated(true);
+  };
+
   return (
     <div className="p-10 border rounded-xl mx-auto my-12 min-h-[500px]">
       <HeadingDescription
-        title={loading ? Lookup.LoadingWaitTitle : Lookup.LogoOutputTitle}
-        description={loading ? Lookup.LoadingWaitDesc : Lookup.LogoOutputDesc}
+        title={loading ? Lookup.LoadingWaitTitle : error ? "Không thể tạo logo" : Lookup.LogoOutputTitle}
+        description={loading ? Lookup.LoadingWaitDesc : error ? error : Lookup.LogoOutputDesc}
       />
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[500px]">
           <LoadingSpinner />
+        </div>
+      ) : error ? (
+        <div className="text-center my-12 p-8 border rounded-lg bg-red-50">
+          <p className="text-lg text-red-600 mb-4">
+            {error}
+          </p>
+          {(!userDetail || userDetail.credits <= 0) && (
+            <div className="mt-4">
+              <Link href="/buy-credits">
+                <Button className="bg-primary hover:bg-primary/90">
+                  Mua thêm credits
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       ) : imageUrls.length > 0 ? (
         <div className="text-center my-12">
@@ -116,7 +159,7 @@ const GenerateLogo = () => {
             No logo has been generated yet.
           </p>
           <button
-            onClick={generateAILogo}
+            onClick={handleTryAgain}
             className="mt-4 px-6 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition"
           >
             Try Again

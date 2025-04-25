@@ -14,7 +14,8 @@ export async function POST(req){
             const data = {
                 name : userName,
                 email : userEmail,
-                credits :5
+                credits :5,
+                role : "member"
             }
             await setDoc(doc(db, "users", userEmail),{
                 ...data

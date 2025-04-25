@@ -6,7 +6,6 @@ function Dashboard() {
   return (
     <div className='mt-20'>
         <Info/>
-
         <LogoList/>
     </div>
   )
