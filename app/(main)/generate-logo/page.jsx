@@ -19,13 +19,13 @@ const GenerateLogo = () => {
 
   // 1 : Load data
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window != undefined && userDetail?.email ) {
       try {
         const storage = localStorage.getItem("formData");
         if (storage) {
           setFormData(JSON.parse(storage));
+          console.log(JSON.parse(storage))
         } else {
-          // Back về tạo mới nếu không có formData
           router.push("/create");
         }
       } catch (error) {
@@ -36,7 +36,6 @@ const GenerateLogo = () => {
     }
   }, [userDetail, router]);
 
-  // 2 : Tạo logo nếu đủ dữ liệu
   useEffect(() => {
     if (formData?.title && initialLoadAttempted) {
       generateAILogo();

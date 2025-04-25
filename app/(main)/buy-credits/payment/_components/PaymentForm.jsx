@@ -60,6 +60,8 @@ export default function PaymentForm() {
     const hasEmpty = Object.values(formData).some((v) => v === "");
     if (hasEmpty) {
       alert("Please fill in all fields");
+
+      
       return;
     }
 
