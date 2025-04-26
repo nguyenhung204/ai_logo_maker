@@ -12,7 +12,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const GenerateLogo = () => {
-  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const { userDetail, refreshUserData } = useContext(UserDetailContext);
   const [formData, setFormData] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   const [loading, setLoading] = useState(true); 
@@ -38,9 +38,8 @@ const GenerateLogo = () => {
 
   useEffect(() => {
     if (formData?.title && !logoGenerated) {
-      // Kiểm tra credits trước khi tạo logo
       if (!userDetail || userDetail.credits <= 0) {
-        setError("Bạn không có đủ credits để tạo logo");
+        setError("You don't have enough credits to create a logo");
         setLoading(false);
       } else {
         generateAILogo();
@@ -75,18 +74,17 @@ const GenerateLogo = () => {
         setImageUrls([image]);
       }
 
+      // Thay vì trực tiếp sửa đổi userDetail, refresh dữ liệu từ DB
       if (result.data?.updatedUserDetails) {
-        setUserDetail(prevState => ({
-          ...prevState,
-          ...result.data.updatedUserDetails
-        }));
+        // Refresh dữ liệu người dùng từ DB
+        await refreshUserData();
       }
     } catch (error) {
       console.error("Error generating logo:", error);
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
       } else {
-        setError("Đã có lỗi xảy ra khi tạo logo. Vui lòng thử lại sau.");
+        setError("An error occurred while creating the logo. Please try again later.");
       }
     } finally {
       setLoading(false);
@@ -94,9 +92,9 @@ const GenerateLogo = () => {
   };
 
   const handleTryAgain = () => {
-    // Kiểm tra credits trước khi thử lại
+    // Check credits before trying again
     if (!userDetail || userDetail.credits <= 0) {
-      setError("Bạn không có đủ credits để tạo logo");
+      setError("You don't have enough credits to create a logo");
       return;
     }
     
@@ -108,7 +106,7 @@ const GenerateLogo = () => {
   return (
     <div className="p-10 border rounded-xl mx-auto my-12 min-h-[500px]">
       <HeadingDescription
-        title={loading ? Lookup.LoadingWaitTitle : error ? "Không thể tạo logo" : Lookup.LogoOutputTitle}
+        title={loading ? Lookup.LoadingWaitTitle : error ? "Unable to create logo" : Lookup.LogoOutputTitle}
         description={loading ? Lookup.LoadingWaitDesc : error ? error : Lookup.LogoOutputDesc}
       />
 
@@ -125,7 +123,7 @@ const GenerateLogo = () => {
             <div className="mt-4">
               <Link href="/buy-credits">
                 <Button className="bg-primary hover:bg-primary/90">
-                  Mua thêm credits
+                  Buy more credits
                 </Button>
               </Link>
             </div>

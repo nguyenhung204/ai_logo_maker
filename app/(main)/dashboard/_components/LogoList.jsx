@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { db } from '@/config/FirebaseConfig'
 
 function LogoList() {
-  const { userDetail, setUserDetail } = useContext(UserDetailContext)
+  const { userDetail } = useContext(UserDetailContext)
   const [ logoList, setLogoList ] = useState([])
   useEffect( () => {
     userDetail&&GetUserLogos()
