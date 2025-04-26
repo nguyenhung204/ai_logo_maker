@@ -62,12 +62,12 @@ export default function PaymentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     const hasEmpty = Object.values(formData).some((v) => v === "");
     if (hasEmpty) {
       alert("Please fill in all fields");
       return;
     }
+    setIsSubmitting(true);
 
     const result = await axios.post("/api/process-payment", {
       userEmail: userDetail?.email,
