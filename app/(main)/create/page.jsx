@@ -67,6 +67,16 @@ function CreateLogo() {
     });
   };
 
+  useEffect(() => {
+    if (formData) {
+      saveFormDataToLocalStorage(formData);
+    }
+  }, [formData]);
+
+  const saveFormDataToLocalStorage = (formData) => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  };
+
   const totalSteps = 6;
   const stepLabels = [
     "Title",
