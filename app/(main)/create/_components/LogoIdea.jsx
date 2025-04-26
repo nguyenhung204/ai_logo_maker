@@ -1,14 +1,16 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import HeadingDescription from "./HeadingDescription";
 import Lookup from "@/app/(main)/_data/Lookup";
 import axios from "axios";
 import Prompt from "@/app/(main)/_data/Prompt";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, RotateCwIcon } from "lucide-react"; // ✨ Import thêm
 
 function LogoIdea({ formData, onHandleInputChange }) {
   const [ideas, setIdeas] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(formData?.logo_prompts);
+
   useEffect(() => {
     generateLogoDesignIdea();
   }, []);
@@ -23,13 +25,11 @@ function LogoIdea({ formData, onHandleInputChange }) {
       .replace("{logoDesc}", formData?.desc)
       .replace("{logoPrompt}", formData?.design.prompt);
 
-    // console.log(PROMPT);
     const result = await axios.post("/api/ai-design-ideas", {
       prompt: PROMPT,
     });
 
-    console.log(result.data);
-    !ideas && setIdeas(result.data.logo_prompts);
+    setIdeas(result.data.logo_prompts);
     setLoading(false);
   };
 
@@ -39,38 +39,59 @@ function LogoIdea({ formData, onHandleInputChange }) {
         title={Lookup.LogoIdeaTitle}
         description={Lookup.LogoIdeaDesc}
       />
+
       <div className="flex items-center justify-center">
         {loading && <Loader2Icon className="animate-spin my-10" />}
-      </div>
-      <div className="flex flex-wrap gap-3 mt-6">
-        {ideas &&
-          ideas.map((item, index) => (
+
+        {!loading && (
+          <div className="flex flex-wrap gap-3 mt-6">
+            {ideas?.map((item, index) => (
+              <h2
+                key={index}
+                onClick={() => {
+                  setSelectedOption(item.prompt);
+                  onHandleInputChange(item.prompt);
+                }}
+                className={`p-2 rounded-full border px-3 cursor-pointer transition hover:border-primary ${
+                  selectedOption === item.prompt && "border-primary"
+                }`}
+              >
+                {item.prompt}
+              </h2>
+            ))}
+
             <h2
-              key={index}
               onClick={() => {
-                setSelectedOption(item.prompt);
-                onHandleInputChange(item.prompt);
+                setSelectedOption("Let AI Select the best idea");
+                onHandleInputChange("Let AI Select the best idea");
               }}
-              className={`p-2 rounded-full border px-3 cursor-pointer
-          hover:border-primary ${
-            selectedOption == item.prompt && "border-primary"
-          }`}
+              className={`p-2 rounded-full border px-3 cursor-pointer transition hover:border-primary ${
+                selectedOption === "Let AI Select the best idea" &&
+                "border-primary"
+              }`}
             >
-              {item.prompt}
+              Let AI Select the best idea
             </h2>
-          ))}
-        <h2
-          onClick={() => {
-            setSelectedOption("Let AI Select the best idea");
-            onHandleInputChange("Let AI Select the best idea");
-          }}
-          className={`p-2 rounded-full border px-3 cursor-pointer
-          hover:border-primary ${
-            selectedOption == "Let AI Select the best idea" && "border-primary"
-          }`}
-        >
-          Let AI Select the best idea
-        </h2>
+
+            <button
+              onClick={generateLogoDesignIdea}
+              className="text-muted-foreground hover:text-primary transition bg-primary text-white text-center px-5 rounded-lg"
+            >
+              <RotateCwIcon className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="my-6 p-4 border rounded-lg bg-muted/50">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-sm text-muted-foreground">
+            Current Selected Idea:
+          </p>
+        </div>
+        <p className="text-lg font-semibold text-primary">
+          {formData.idea || "NONE"}
+        </p>
       </div>
     </div>
   );

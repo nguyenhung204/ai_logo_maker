@@ -111,12 +111,12 @@ export default function TransferSuccessModal({ isOpen, onClose }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1, duration: 0.4 }}
                 >
-                  Thanh toán thành công
+                  Payment Successful
                 </motion.h2>
 
                 <div className="w-full text-center text-sm text-zinc-600 dark:text-zinc-400">
-                  Cảm ơn bạn đã thanh toán. Credits của bạn sẽ được cập nhật
-                  ngay sau ít phút.
+                  Thank you for your payment. Your credits will be updated
+                  shortly.
                 </div>
               </CardContent>
             </Card>
