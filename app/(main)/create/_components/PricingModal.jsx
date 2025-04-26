@@ -12,12 +12,6 @@ function PricingModal({ formData }) {
   const { user } = useUser();
   const { userDetail } = useContext(UserDetailContext);
 
-  useEffect(() => {
-    if (formData && typeof window !== "undefined") {
-      localStorage.setItem("formData", JSON.stringify(formData));
-    }
-  }, [formData]);
-
   const handleGenerateClick = (e) => {
     if (!userDetail || userDetail.credits <= 0) {
       e.preventDefault();
