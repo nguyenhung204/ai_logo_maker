@@ -183,15 +183,23 @@ function CreateLogo() {
 
       {/* Modal hỏi user */}
       {showContinueModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded shadow-md text-center">
-            <h2 className="text-xl font-bold mb-4">Continue Your Session?</h2>
-            <p className="mb-6">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-2 md:p-8 rounded-lg shadow-md text-center w-full max-w-md">
+            <h2 className="text-lg md:text-xl font-bold mb-4">
+              Continue Your Session?
+            </h2>
+            <p className="text-sm md:text-base mb-6">
               Do you want to continue your previous session?
             </p>
-            <div className="flex justify-center gap-4">
-              <Button onClick={handleContinue}>Continue</Button>
-              <Button variant="outline" onClick={handleStartNew}>
+            <div className="flex flex-col md:flex-row justify-center gap-4">
+              <Button onClick={handleContinue} className="w-full md:w-auto">
+                Continue
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleStartNew}
+                className="w-full md:w-auto"
+              >
                 Start New
               </Button>
             </div>
