@@ -39,7 +39,7 @@ function CreateLogo() {
   // User chọn "Bắt đầu mới"
   const handleStartNew = () => {
     localStorage.removeItem("formData");
-    setFormData({});
+    setFormData(null);
     setStep(1);
     setShowContinueModal(false);
   };
