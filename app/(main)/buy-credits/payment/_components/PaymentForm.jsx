@@ -62,6 +62,7 @@ export default function PaymentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const hasEmpty = Object.values(formData).some((v) => v === "");
     if (hasEmpty) {
       alert("Please fill in all fields");
@@ -75,7 +76,6 @@ export default function PaymentForm() {
 
     await refreshUserData();
 
-    setIsSubmitting(true);
     setTimeout(() => {
       setShowSuccess(true);
       setFormData({
