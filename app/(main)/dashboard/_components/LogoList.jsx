@@ -8,6 +8,7 @@ import { db } from "@/config/FirebaseConfig";
 function LogoList() {
   const { userDetail } = useContext(UserDetailContext);
   const [logoList, setLogoList] = useState([]);
+
   useEffect(() => {
     userDetail && GetUserLogos();
   }, [userDetail]);
@@ -36,6 +37,11 @@ function LogoList() {
     document.body.removeChild(link);
   };
 
+  const handleEditLogo = (imageBase64) => {
+    localStorage.setItem("editImage", imageBase64);
+    window.location.href = "/edit";
+  };
+
   return (
     <div className="mt-10">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -60,12 +66,19 @@ function LogoList() {
                   {logo?.desc}
                 </p>
 
-                <div className="flex justify-center mt-3 bg-primary w-fit mx-auto px-3 rounded-lg py-2">
+                <div className="flex flex-col space-y-4 my-2">
                   <button
                     onClick={() => downloadImage(logo?.image, logo?.title)}
-                    className="text-sm text-white  "
+                    className="text-sm text-white bg-primary px-3 rounded-lg py-2 w-2/3 mx-auto"
                   >
                     Download
+                  </button>
+
+                  <button
+                    onClick={() => handleEditLogo(logo?.image)}
+                    className="text-sm text-white bg-blue-500 px-3 rounded-lg py-2 w-2/3 mx-auto"
+                  >
+                    Edit
                   </button>
                 </div>
               </div>

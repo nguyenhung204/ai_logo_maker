@@ -99,9 +99,9 @@ export default function Header() {
             <Image
               src="/logo.svg"
               alt="Logo"
-              width={40}
-              height={40}
-              className="size-64"
+              width={0}
+              height={0}
+              className="w-fit"
               priority
             />
           </Link>
