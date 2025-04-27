@@ -16,21 +16,28 @@ export default function RightSettings({ selectedObject, canvas }) {
   const [fill, setFill] = useState("#000000");
   const [opacity, setOpacity] = useState(100);
   const [text, setText] = useState("");
+  const [fontSize, setFontSize] = useState(20);
+  const [fontFamily, setFontFamily] = useState("Arial");
+  const [fontWeight, setFontWeight] = useState("normal");
 
-  // Khi người dùng chọn 1 obj bất kỳ
-  // thì đồng bộ với obj (size, width, height) đó
   useEffect(() => {
     if (selectedObject) {
       syncObjectState();
     }
   }, [selectedObject]);
 
-  // UseEffect này là Listener, nó lắng nghe mấy sự
-  // kiện liên quan đến selectedObject
   useEffect(() => {
     if (!canvas) return;
 
-    const handleUpdate = () => {
+    const handleUpdate = (e) => {
+      if (!e?.target) return;
+
+      if (e.target.type === "textbox") {
+        setText(e.target.text || "");
+        setFontSize(e.target.fontSize || 20);
+        setFontFamily(e.target.fontFamily || "Arial");
+        setFontWeight(e.target.fontWeight || "normal");
+      }
       syncObjectState();
     };
 
@@ -38,16 +45,17 @@ export default function RightSettings({ selectedObject, canvas }) {
     canvas.on("object:scaling", handleUpdate);
     canvas.on("object:moving", handleUpdate);
     canvas.on("object:rotating", handleUpdate);
+    canvas.on("text:changed", handleUpdate);
 
     return () => {
       canvas.off("object:modified", handleUpdate);
       canvas.off("object:scaling", handleUpdate);
       canvas.off("object:moving", handleUpdate);
       canvas.off("object:rotating", handleUpdate);
+      canvas.off("text:changed", handleUpdate);
     };
-  }, [canvas, selectedObject]);
+  }, [canvas]);
 
-  // Hàm sync lại obj đúng kích thước
   function syncObjectState() {
     if (!selectedObject) return;
 
@@ -60,6 +68,9 @@ export default function RightSettings({ selectedObject, canvas }) {
     setOpacity(Math.round((selectedObject.opacity || 1) * 100));
     if (selectedObject.type === "textbox") {
       setText(selectedObject.text || "");
+      setFontSize(selectedObject.fontSize || 20);
+      setFontFamily(selectedObject.fontFamily || "Arial");
+      setFontWeight(selectedObject.fontWeight || "normal");
     }
   }
 
@@ -85,7 +96,12 @@ export default function RightSettings({ selectedObject, canvas }) {
     });
 
     if (selectedObject.type === "textbox") {
-      selectedObject.text = text;
+      selectedObject.set({
+        text,
+        fontSize,
+        fontFamily,
+        fontWeight,
+      });
     }
 
     canvas.requestRenderAll();
@@ -220,8 +236,73 @@ export default function RightSettings({ selectedObject, canvas }) {
                 <Input
                   value={text}
                   onChange={(e) => {
-                    setText(e.target.value);
-                    updateObject();
+                    const newText = e.target.value;
+                    setText(newText);
+                    if (selectedObject?.type === "textbox") {
+                      selectedObject.set({ text: newText });
+                      canvas.fire("object:modified", {
+                        target: selectedObject,
+                      });
+                      canvas.requestRenderAll();
+                    }
+                  }}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label>Font Size</Label>
+                <Input
+                  type="number"
+                  value={fontSize}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 20;
+                    setFontSize(value);
+                    updateObject({ fontSize: value });
+                  }}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label>Font Family</Label>
+                <select
+                  value={fontFamily}
+                  className="w-full border rounded px-2 py-1"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFontFamily(value);
+                    updateObject({ fontFamily: value });
+                  }}
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Verdana">Verdana</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <Label>Font Weight</Label>
+                <button
+                  type="button"
+                  className="w-full border px-2 py-1 rounded"
+                  onClick={() => {
+                    const newWeight = fontWeight === "bold" ? "normal" : "bold";
+                    setFontWeight(newWeight);
+                    updateObject({ fontWeight: newWeight });
+                  }}
+                >
+                  {fontWeight === "bold" ? "Normal" : "Bold"}
+                </button>
+              </div>
+
+              <div className="space-y-1">
+                <Label>Font Color</Label>
+                <ColorPicker
+                  color={fill}
+                  onChange={(color) => {
+                    setFill(color);
+                    updateObject({ fill: color });
                   }}
                 />
               </div>

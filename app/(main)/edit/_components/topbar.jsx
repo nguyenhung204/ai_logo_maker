@@ -15,22 +15,14 @@ import * as fabric from "fabric";
 export default function TopBar({ canvas }) {
   const fileInputRef = useRef(null);
 
-  // Save project to localStorage
-  // const handleSave = () => {
-  //   if (!canvas) return;
-  //   const json = canvas.toJSON();
-  //   localStorage.setItem("myCanvas", JSON.stringify(json));
-  //   alert("Project saved!");
-  // };
-
-  // Trigger input file
+  // Trigger khi nhập file
   const handleAddImage = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
-  // When select image
+  // Hàm xử lý logic thêm ảnh vào
   const handleImageChange = async (e) => {
     if (!canvas) return;
 
@@ -56,7 +48,7 @@ export default function TopBar({ canvas }) {
     reader.readAsDataURL(file);
   };
 
-  // Export as PNG
+  // Hàm export png
   const handleExportImage = () => {
     if (!canvas) return;
     const dataURL = canvas.toDataURL({
@@ -67,18 +59,6 @@ export default function TopBar({ canvas }) {
     const link = document.createElement("a");
     link.href = dataURL;
     link.download = "canvas.png";
-    link.click();
-  };
-
-  // Export as JSON
-  const handleExportJSON = () => {
-    if (!canvas) return;
-    const json = JSON.stringify(canvas.toJSON());
-    const blob = new Blob([json], { type: "application/json" });
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "canvas.json";
     link.click();
   };
 
@@ -94,26 +74,6 @@ export default function TopBar({ canvas }) {
             onChange={handleImageChange}
             className="hidden"
           />
-
-          {/* Save */}
-          {/* <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-1"
-                onClick={handleSave}
-              >
-                <Save className="h-4 w-4" />
-                <span>Save</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Save project to localStorage</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <Separator orientation="vertical" className="mx-1 h-6" /> */}
 
           {/* Add Image */}
           <Tooltip>
@@ -150,24 +110,6 @@ export default function TopBar({ canvas }) {
             </TooltipTrigger>
             <TooltipContent>
               <p>Export canvas as PNG</p>
-            </TooltipContent>
-          </Tooltip>
-
-          {/* Export JSON */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-1"
-                onClick={handleExportJSON}
-              >
-                <FileJson className="h-4 w-4" />
-                <span>Export JSON</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Export canvas as JSON</p>
             </TooltipContent>
           </Tooltip>
         </div>
