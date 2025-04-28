@@ -49,25 +49,35 @@ const GenerateLogo = () => {
   }, [formData, logoGenerated, userDetail]);
 
   const generateAILogo = async () => {
-    const PROMPT = Prompt.LOGO_PROMPT.replace("{logoTitle}", formData?.title)
-      .replace("{logoDesc}", formData?.desc)
-      .replace("{logoColor}", formData?.palette)
-      .replace("{logoDesign}", formData?.design?.title)
-      .replace("{logoIdea}", formData.idea || "Let AI Select the best idea")
-      .replace("{logoPrompt}", formData?.design?.prompt);
-
     try {
       setLoading(true);
 
-      const result = await axios.post("/api/ai-logo-model", {
-        prompt: PROMPT,
+      // 1. Tạo prompt từ AILogoPrompt
+      const promptResult = await axios.post("/api/gen-prompt", {
+        prompt: Prompt.LOGO_PROMPT.replace("{logoTitle}", formData?.title)
+          .replace("{logoDesc}", formData?.desc)
+          .replace("{logoColor}", formData?.palette)
+          .replace("{logoDesign}", formData?.design?.title)
+          .replace(
+            "{logoIdea}",
+            formData?.idea || "Let AI Select the best idea"
+          )
+          .replace("{logoPrompt}", formData?.design?.prompt),
+      });
+
+      const generatedPrompt = promptResult.data.prompt;
+
+      // 2. Gửi prompt mới để sinh ảnh
+      const imageResult = await axios.post("/api/gen-image", {
+        prompt: generatedPrompt,
         email: userDetail?.email,
         title: formData?.title,
         desc: formData?.desc,
         userCredits: userDetail?.credits,
       });
 
-      const image = result.data?.image;
+      const image = imageResult.data.image;
+
       if (image) {
         setImageUrls([image]);
       }
@@ -76,7 +86,7 @@ const GenerateLogo = () => {
       localStorage.removeItem("formData");
     } catch (error) {
       console.error("Error generating logo:", error);
-      if (error.response && error.response.data && error.response.data.error) {
+      if (error.response?.data?.error) {
         setError(error.response.data.error);
       } else {
         setError(
