@@ -11,6 +11,10 @@ export default function EditorPage() {
   const [canvas, setCanvas] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
 
+  // Khi bấm nút Edit ở trang /dashboard:
+  // - Ảnh sẽ được lưu tạm vào localStorage.
+  // - Sau đó chuyển hướng sang trang /edit.
+  // - Tại /edit, ảnh từ localStorage sẽ được load vào canvas.
   useEffect(() => {
     const loadImage = async () => {
       const imgData = localStorage.getItem("editImage");
@@ -35,7 +39,7 @@ export default function EditorPage() {
   }, [canvas]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden ">
       <TopBar canvas={canvas} />
 
       <div className="flex flex-1 overflow-hidden">

@@ -91,6 +91,7 @@ export default function LeftToolbar({ canvas }) {
         break;
       case "backward":
         canvas.sendObjectBackwards(activeObj);
+
         break;
       case "delete":
         canvas.remove(activeObj);

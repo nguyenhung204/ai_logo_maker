@@ -49,9 +49,38 @@ export default function TopBar({ canvas }) {
   };
 
   // Hàm export png
-  const handleExportImage = () => {
+  const handleExportImage = async () => {
     if (!canvas) return;
-    const dataURL = canvas.toDataURL({
+
+    const objects = canvas.getObjects();
+
+    if (objects.length === 0) return;
+
+    // Clone từng object
+    const clones = await Promise.all(objects.map((obj) => obj.clone()));
+
+    // Group tạm để lấy bounding box
+    const group = new fabric.Group(clones, { canvas });
+    const { width, height, left, top } = group.getBoundingRect(true, true);
+
+    // Tạo canvas mới
+    const tempCanvas = new fabric.StaticCanvas(null, {
+      width: width,
+      height: height,
+      backgroundColor: "white",
+    });
+
+    // Copy object vào canvas mới
+    clones.forEach((cloned) => {
+      cloned.left = (cloned.left || 0) - left;
+      cloned.top = (cloned.top || 0) - top;
+      tempCanvas.add(cloned);
+    });
+
+    tempCanvas.renderAll();
+
+    // Xuất ảnh từ tempCanvas
+    const dataURL = tempCanvas.toDataURL({
       format: "png",
       quality: 1,
     });
