@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 function Info() {
-  const { userDetail, setUserDetail } = useContext(UserDetailContext)
+  const { userDetail } = useContext(UserDetailContext)
   return (
     <div>
       <div className='flex justify-between items-center mb-4'>

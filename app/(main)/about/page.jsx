@@ -100,43 +100,6 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Why Choose Us */}
-      <div className="mb-20">
-        <h2 className="mb-12 text-center text-3xl font-bold text-primary">
-          Why Choose Our AI Logo Generator
-        </h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex flex-col items-center rounded-lg p-4 text-center">
-            <div className="mb-4 rounded-full bg-primary/10 p-3">
-              <Rocket className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-medium">Lightning Fast</h3>
-            <p className="text-sm text-muted-foreground">Generate professional logos in seconds, not days</p>
-          </div>
-          <div className="flex flex-col items-center rounded-lg p-4 text-center">
-            <div className="mb-4 rounded-full bg-primary/10 p-3">
-              <Shield className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-medium">100% Unique</h3>
-            <p className="text-sm text-muted-foreground">Every design is original and tailored to your brand</p>
-          </div>
-          <div className="flex flex-col items-center rounded-lg p-4 text-center">
-            <div className="mb-4 rounded-full bg-primary/10 p-3">
-              <Star className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-medium">Premium Quality</h3>
-            <p className="text-sm text-muted-foreground">Professional results without the premium price tag</p>
-          </div>
-          <div className="flex flex-col items-center rounded-lg p-4 text-center">
-            <div className="mb-4 rounded-full bg-primary/10 p-3">
-              <Award className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-medium">Full Ownership</h3>
-            <p className="text-sm text-muted-foreground">You own all rights to your generated logos</p>
-          </div>
-        </div>
-      </div>
-
       {/* Meet Our Team */}
       <div className="mb-20">
         <h2 className="mb-4 text-center text-3xl font-bold text-primary">

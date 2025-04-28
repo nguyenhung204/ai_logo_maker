@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CreditCard, Calendar, Lock, User, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,13 @@ import CreditPackages from "../../../_data/CreditPackages";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import TransferSuccessModal from "./TransferSuccessModal";
+import { UserDetailContext } from "@/app/(main)/_context/UserDetailContext";
+import axios from "axios";
 
 export default function PaymentForm() {
+  // Thông tin người dùng
+  const { userDetail, refreshUserData } = useContext(UserDetailContext);
+
   // Làm nút back
   const router = useRouter();
 
@@ -55,17 +60,22 @@ export default function PaymentForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const hasEmpty = Object.values(formData).some((v) => v === "");
     if (hasEmpty) {
       alert("Please fill in all fields");
-
-      
       return;
     }
-
     setIsSubmitting(true);
+
+    const result = await axios.post("/api/process-payment", {
+      userEmail: userDetail?.email,
+      packageCredits: selectedPackage.credits,
+    });
+
+    await refreshUserData();
+
     setTimeout(() => {
       setShowSuccess(true);
       setFormData({
@@ -81,6 +91,8 @@ export default function PaymentForm() {
 
   // Sự kiện hiển thị modal
   const [showSuccess, setShowSuccess] = useState(false);
+
+  console.log(userDetail);
 
   return (
     <div className="w-fit md:w-2/3 lg:w-2/5 mx-auto">
