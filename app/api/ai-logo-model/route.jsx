@@ -65,7 +65,6 @@ export async function POST(req) {
 
     return NextResponse.json({
       image: base64Image,
-      updatedUserDetails: updatedUserDetails
     });
   } catch (e) {
     console.error("Error generating image:", e);

@@ -15,18 +15,18 @@ const GenerateLogo = () => {
   const { userDetail, refreshUserData } = useContext(UserDetailContext);
   const [formData, setFormData] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [logoGenerated, setLogoGenerated] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined" && userDetail?.email ) {
+    if (typeof window !== "undefined" && userDetail?.email) {
       try {
         const storage = localStorage.getItem("formData");
         if (storage) {
           setFormData(JSON.parse(storage));
-          console.log(JSON.parse(storage))
+          console.log(JSON.parse(storage));
         } else {
           router.push("/create");
         }
@@ -46,45 +46,42 @@ const GenerateLogo = () => {
         setLogoGenerated(true);
       }
     }
-  },[formData, logoGenerated, userDetail]);
+  }, [formData, logoGenerated, userDetail]);
 
   const generateAILogo = async () => {
-    const PROMPT = Prompt.LOGO_PROMPT
-      .replace("{logoTitle}", formData?.title)
-      .replace("{logoDesc}", formData?.desc )
+    const PROMPT = Prompt.LOGO_PROMPT.replace("{logoTitle}", formData?.title)
+      .replace("{logoDesc}", formData?.desc)
       .replace("{logoColor}", formData?.palette)
       .replace("{logoDesign}", formData?.design?.title)
       .replace("{logoIdea}", formData.idea || "Let AI Select the best idea")
       .replace("{logoPrompt}", formData?.design?.prompt);
 
-    console.log(PROMPT)
-
     try {
       setLoading(true);
+
       const result = await axios.post("/api/ai-logo-model", {
         prompt: PROMPT,
         email: userDetail?.email,
         title: formData?.title,
-        desc : formData?.desc,
-        userCredits : userDetail?.credits
+        desc: formData?.desc,
+        userCredits: userDetail?.credits,
       });
-      console.log(result?.data);
+
       const image = result.data?.image;
       if (image) {
         setImageUrls([image]);
       }
 
-      // Thay vì trực tiếp sửa đổi userDetail, refresh dữ liệu từ DB
-      if (result.data?.updatedUserDetails) {
-        // Refresh dữ liệu người dùng từ DB
-        await refreshUserData();
-      }
+      await refreshUserData();
+      localStorage.removeItem("formData");
     } catch (error) {
       console.error("Error generating logo:", error);
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
       } else {
-        setError("An error occurred while creating the logo. Please try again later.");
+        setError(
+          "An error occurred while creating the logo. Please try again later."
+        );
       }
     } finally {
       setLoading(false);
@@ -97,7 +94,7 @@ const GenerateLogo = () => {
       setError("You don't have enough credits to create a logo");
       return;
     }
-    
+
     setError(null);
     generateAILogo();
     setLogoGenerated(true);
@@ -106,8 +103,20 @@ const GenerateLogo = () => {
   return (
     <div className="p-10 border rounded-xl mx-auto my-12 min-h-[500px]">
       <HeadingDescription
-        title={loading ? Lookup.LoadingWaitTitle : error ? "Unable to create logo" : Lookup.LogoOutputTitle}
-        description={loading ? Lookup.LoadingWaitDesc : error ? error : Lookup.LogoOutputDesc}
+        title={
+          loading
+            ? Lookup.LoadingWaitTitle
+            : error
+            ? "Unable to create logo"
+            : Lookup.LogoOutputTitle
+        }
+        description={
+          loading
+            ? Lookup.LoadingWaitDesc
+            : error
+            ? error
+            : Lookup.LogoOutputDesc
+        }
       />
 
       {loading ? (
@@ -116,9 +125,7 @@ const GenerateLogo = () => {
         </div>
       ) : error ? (
         <div className="text-center my-12 p-8 border rounded-lg bg-red-50">
-          <p className="text-lg text-red-600 mb-4">
-            {error}
-          </p>
+          <p className="text-lg text-red-600 mb-4">{error}</p>
           {(!userDetail || userDetail.credits <= 0) && (
             <div className="mt-4">
               <Link href="/buy-credits">

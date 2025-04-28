@@ -1,21 +1,30 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, use } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
-import { UserDetailContext, fetchUserFromDB, createSecureUserData } from "./(main)/_context/UserDetailContext";
+import {
+  UserDetailContext,
+  fetchUserFromDB,
+  createSecureUserData,
+} from "./(main)/_context/UserDetailContext";
 
 const Provider = ({ children }) => {
-  const { user, isLoaded: isUserLoaded } = useUser();
+  const { user, isLoaded: isUserLoaded, isSignedIn } = useUser();
   const [userDetail, setUserDetail] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  // Kiểm tra người dùng đăng nhập chưa
+  useEffect(() => {
+    if (!isSignedIn) setUserDetail(null);
+  }, [isSignedIn]);
+
   const refreshUserData = useCallback(async () => {
     if (!user) return;
-    
+
     try {
       const email = user?.emailAddresses[0]?.emailAddress;
       const freshData = await fetchUserFromDB(email);
-      
+
       if (freshData) {
         const secureUserData = createSecureUserData(freshData);
         setUserDetail(secureUserData);
@@ -70,8 +79,8 @@ const Provider = ({ children }) => {
   return (
     <div>
       <UserDetailContext.Provider
-        value={{ 
-          userDetail, 
+        value={{
+          userDetail,
           setUserDetail: () => {
             console.warn("Direct state modification is not allowed. Use API endpoints instead.");
           },

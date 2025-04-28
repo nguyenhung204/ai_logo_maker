@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +11,11 @@ import {
 } from "@/components/ui/card";
 import CreditPackages from "../_data/CreditPackages";
 import Link from "next/link";
+import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function BuyCreditsPage() {
+  const { isSignedIn } = useUser();
+
   return (
     <div className="container mx-auto py-12 px-4 bg-gradient-to-b from-slate-50/50 to-slate-100 min-h-screen">
       <div className="text-center mb-12">
@@ -52,7 +57,7 @@ export default function BuyCreditsPage() {
                     </div>
                   )}
                 </div>
-                <CardTitle className="text-xl font-bold flex items-center justify-center gap-2">
+                <CardTitle className="text-lg font-bold flex items-center justify-center gap-2">
                   <Icon
                     className={`h-5 w-5 ${
                       pkg.popular ? "text-purple-500" : ""
@@ -85,17 +90,30 @@ export default function BuyCreditsPage() {
               </CardContent>
 
               <CardFooter className="pt-2 pb-6 relative z-10">
-                <Link
-                  href={`/buy-credits/payment/?package=${pkg.id}`}
-                  className="mx-auto w-fit"
-                >
-                  <Button
-                    className={`w-full text-lg py-6 border-none shadow-lg ${pkg.buttonColor} text-white transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl`}
-                    size="lg"
+                {isSignedIn && (
+                  <Link
+                    href={`/buy-credits/payment/?package=${pkg.id}`}
+                    className="mx-auto w-fit"
                   >
-                    Buy Now
-                  </Button>
-                </Link>
+                    <Button
+                      className={`w-full text-lg py-6 border-none shadow-lg ${pkg.buttonColor} text-white transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl`}
+                      size="lg"
+                    >
+                      Buy Now
+                    </Button>
+                  </Link>
+                )}
+
+                {!isSignedIn && (
+                  <SignInButton mode="modal">
+                    <Button
+                      className={`w-full text-lg py-6 border-none shadow-lg ${pkg.buttonColor} text-white transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl`}
+                      size="lg"
+                    >
+                      Buy Now
+                    </Button>
+                  </SignInButton>
+                )}
               </CardFooter>
             </Card>
           );

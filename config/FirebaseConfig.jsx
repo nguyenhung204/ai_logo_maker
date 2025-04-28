@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "ai-logo-maker-4ea1f",
   storageBucket: "ai-logo-maker-4ea1f.firebasestorage.app",
   messagingSenderId: "262611841435",
-  appId: "1:262611841435:web:57e73fcd8a5c8a0b9c313e"
+  appId: "1:262611841435:web:57e73fcd8a5c8a0b9c313e",
 };
 
 // const firebaseConfig = {
