@@ -17,7 +17,6 @@ const Provider = ({ children }) => {
       const freshData = await fetchUserFromDB(email);
       
       if (freshData) {
-        // Tạo phiên bản bảo mật của dữ liệu
         const secureUserData = createSecureUserData(freshData);
         setUserDetail(secureUserData);
       }
@@ -26,7 +25,6 @@ const Provider = ({ children }) => {
     }
   }, [user]);
 
-  // Kiểm tra và đăng ký người dùng
   const CheckUserAuth = async () => {
     setIsLoading(true);
     try {
@@ -35,7 +33,6 @@ const Provider = ({ children }) => {
         userEmail: user?.emailAddresses[0]?.emailAddress,
       });
       
-      // Tạo phiên bản bảo mật của dữ liệu
       const secureUserData = createSecureUserData(result.data);
       setUserDetail(secureUserData);
     } catch (error) {
@@ -45,7 +42,6 @@ const Provider = ({ children }) => {
     }
   };
 
-  // Khởi tạo dữ liệu người dùng khi đăng nhập
   useEffect(() => {
     if (isUserLoaded) {
       if (user) {
@@ -56,22 +52,17 @@ const Provider = ({ children }) => {
     }
   }, [user, isUserLoaded]);
 
-  // Thiết lập cơ chế refresh định kỳ để đồng bộ dữ liệu
   useEffect(() => {
     if (!user) return;
-    
-    // Refresh ngay lập tức sau khi đăng nhập
     const initialRefreshTimeout = setTimeout(() => {
       refreshUserData();
     }, 1000);
     
-
     return () => {
       clearTimeout(initialRefreshTimeout);
     };
   }, [user, refreshUserData]);
 
-  // Hàm ghi đè đặc biệt để các component có thể gọi khi cần cập nhật dữ liệu
   const forceRefreshUserData = async () => {
     await refreshUserData();
   };
@@ -83,10 +74,9 @@ const Provider = ({ children }) => {
           userDetail, 
           setUserDetail: () => {
             console.warn("Direct state modification is not allowed. Use API endpoints instead.");
-            // Không cho phép sửa đổi trực tiếp bằng devtools, chỉ cho phép thông qua API
           },
           isLoading,
-          refreshUserData: forceRefreshUserData // Cung cấp hàm refresh cho components
+          refreshUserData: forceRefreshUserData
         }}
       >
         {children}
