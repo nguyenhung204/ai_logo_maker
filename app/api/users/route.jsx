@@ -16,6 +16,7 @@ export async function POST(req) {
         credits: 5,
         role: "member",
         createdAt: Timestamp.now(),
+        status : "active"
       };
       await setDoc(doc(db, "users", userEmail), {
         ...data,
