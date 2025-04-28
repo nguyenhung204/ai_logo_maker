@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -96,8 +98,6 @@ export function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Technologies */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-white border-b border-pink-500 pb-2 inline-block">
               Technologies

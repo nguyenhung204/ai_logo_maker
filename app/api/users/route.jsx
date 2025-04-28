@@ -15,6 +15,7 @@ export async function POST(req) {
         email: userEmail,
         credits: 5,
         role: "member",
+        createdAt: Timestamp.now(),
       };
       await setDoc(doc(db, "users", userEmail), {
         ...data,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "lucide-react";
@@ -15,9 +15,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
+import { UserDetailContext } from "../_context/UserDetailContext";
 
 export default function Header() {
   const { user } = useUser();
+  const { userDetail } = useContext(UserDetailContext);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -27,10 +29,6 @@ export default function Header() {
     { title: "Buy Credits", href: "/buy-credits" },
     { title: "About", href: "/about" },
   ];
-
-  // Hàm tạo auth component cho desktop
-  // Nhìn dài vậy thôi chỉ là if else
-  // Collapse lại đi nhìn mệt đấy!!!!
   const renderDesktopAuth = () => {
     if (!user) {
       return (
@@ -52,14 +50,19 @@ export default function Header() {
             Dashboard
           </Button>
         </Link>
+        {userDetail?.role === "admin" && (
+          <Link href="/admin/dashboard">
+            <Button variant="outline" className="hidden md:inline-flex">
+              Manage
+            </Button>
+          </Link>
+        )}
         <UserButton />
       </>
     );
   };
 
-  // Hàm tạo auth component cho mobile
-  // Nhìn dài vậy thôi chỉ là if else
-  // Collapse lại đi nhìn mệt đấy!!!!
+
   const renderMobileAuth = () => {
     if (!user) {
       return (
@@ -83,6 +86,13 @@ export default function Header() {
             Dashboard
           </Button>
         </Link>
+        {userDetail?.role === "admin" && (
+          <Link href="/admin/dashboard">
+            <Button variant="outline" className="w-full">
+              Manage
+            </Button>
+          </Link>
+        )}
         <div className="flex justify-center py-2">
           <UserButton afterSignOutUrl="/" />
         </div>
