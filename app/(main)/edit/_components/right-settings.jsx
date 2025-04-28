@@ -19,6 +19,7 @@ export default function RightSettings({ selectedObject, canvas }) {
   const [fontSize, setFontSize] = useState(20);
   const [fontFamily, setFontFamily] = useState("Arial");
   const [fontWeight, setFontWeight] = useState("normal");
+  const [textAlign, setTextAlign] = useState("left");
 
   useEffect(() => {
     if (selectedObject) {
@@ -71,6 +72,7 @@ export default function RightSettings({ selectedObject, canvas }) {
       setFontSize(selectedObject.fontSize || 20);
       setFontFamily(selectedObject.fontFamily || "Arial");
       setFontWeight(selectedObject.fontWeight || "normal");
+      setTextAlign(selectedObject.textAlign || "left");
     }
   }
 
@@ -84,6 +86,7 @@ export default function RightSettings({ selectedObject, canvas }) {
     const finalAngle = override.angle ?? angle;
     const finalFill = override.fill ?? fill;
     const finalOpacity = override.opacity ?? opacity;
+    const finalTextAlign = override.textAlign ?? textAlign; // <- thêm dòng này
 
     selectedObject.set({
       scaleX: finalWidth / selectedObject.width,
@@ -101,7 +104,9 @@ export default function RightSettings({ selectedObject, canvas }) {
         fontSize,
         fontFamily,
         fontWeight,
+        textAlign: finalTextAlign,
       });
+      selectedObject.initDimensions();
     }
 
     canvas.requestRenderAll();
@@ -121,9 +126,11 @@ export default function RightSettings({ selectedObject, canvas }) {
             <TabsTrigger value="position" className="flex-1">
               Position
             </TabsTrigger>
-            <TabsTrigger value="style" className="flex-1">
-              Style
-            </TabsTrigger>
+            {selectedObject.type !== "textbox" && (
+              <TabsTrigger value="style" className="flex-1">
+                Style
+              </TabsTrigger>
+            )}
             {selectedObject.type === "textbox" && (
               <TabsTrigger value="text" className="flex-1">
                 Text
@@ -202,31 +209,33 @@ export default function RightSettings({ selectedObject, canvas }) {
           </TabsContent>
 
           {/* Tab Style */}
-          <TabsContent value="style" className="space-y-4 pt-4">
-            <div className="space-y-1">
-              <Label>Fill Color</Label>
-              <ColorPicker
-                color={fill}
-                onChange={(color) => {
-                  setFill(color);
-                  updateObject({ fill: color });
-                }}
-              />
-            </div>
-            <div className="space-y-3">
-              <Label>Opacity</Label>
-              <Slider
-                min={0}
-                max={100}
-                step={1}
-                value={[opacity]}
-                onValueChange={(v) => {
-                  setOpacity(v[0]);
-                  updateObject({ opacity: v[0] });
-                }}
-              />
-            </div>
-          </TabsContent>
+          {selectedObject.type !== "textbox" && (
+            <TabsContent value="style" className="space-y-4 pt-4">
+              <div className="space-y-1">
+                <Label>Fill Color</Label>
+                <ColorPicker
+                  color={fill}
+                  onChange={(color) => {
+                    setFill(color);
+                    updateObject({ fill: color });
+                  }}
+                />
+              </div>
+              <div className="space-y-3">
+                <Label>Opacity</Label>
+                <Slider
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={[opacity]}
+                  onValueChange={(v) => {
+                    setOpacity(v[0]);
+                    updateObject({ opacity: v[0] });
+                  }}
+                />
+              </div>
+            </TabsContent>
+          )}
 
           {/* Tab Text */}
           {selectedObject.type === "textbox" && (
@@ -305,6 +314,24 @@ export default function RightSettings({ selectedObject, canvas }) {
                     updateObject({ fill: color });
                   }}
                 />
+              </div>
+
+              <div className="space-y-1">
+                <Label>Text Align</Label>
+                <select
+                  value={textAlign}
+                  className="w-full border rounded px-2 py-1"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTextAlign(value);
+                    updateObject({ textAlign: value });
+                  }}
+                >
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                  <option value="justify">Justify</option>
+                </select>
               </div>
             </TabsContent>
           )}
