@@ -15,7 +15,7 @@ export default function CreditHistoryList({ creditHistory = [] }) {
   if (creditHistory.length === 0) {
     return (
       <div className="bg-muted/40 p-4 rounded-md text-center text-sm text-muted-foreground">
-        No credit history available
+        No credit history availablee
       </div>
     );
   }
