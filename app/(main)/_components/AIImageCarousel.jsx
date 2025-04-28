@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const aiGeneratedImages = [
@@ -57,17 +57,12 @@ export function AIImageCarousel({
     );
   };
 
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
   useEffect(() => {
     if (isAutoPlaying) {
       autoPlayRef.current = setInterval(() => {
         nextSlide();
       }, 3000);
     }
-
     return () => {
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
@@ -75,17 +70,57 @@ export function AIImageCarousel({
     };
   }, [isAutoPlaying, currentIndex]);
 
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+  };
+
   return (
     <section className="w-full py-16 bg-gray-100/50 my-8 rounded-xl">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-primary">{title}</h2>
-          <p className="mt-2 text-lg text-gray-600">{description}</p>
-        </div>
+        {/* Tiêu đề + mô tả */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+          className="text-center mb-8"
+        >
+          <motion.h2
+            variants={itemVariants}
+            className="text-3xl font-bold text-primary"
+          >
+            {title}
+          </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className="mt-2 text-lg text-gray-600"
+          >
+            {description}
+          </motion.p>
+        </motion.div>
 
+        {/* Carousel */}
         <div className="relative">
           <div className="overflow-hidden">
-            <div
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={containerVariants}
               className="flex transition-transform duration-500 ease-in-out"
               style={{
                 transform: `translateX(-${
@@ -94,7 +129,12 @@ export function AIImageCarousel({
               }}
             >
               {aiGeneratedImages.map((image) => (
-                <div key={image.id} className="min-w-[33.333%] px-2">
+                <motion.div
+                  key={image.id}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05 }}
+                  className="min-w-[33.333%] px-2"
+                >
                   <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
                     <div className="relative h-64 w-full">
                       <Image
@@ -107,47 +147,43 @@ export function AIImageCarousel({
                       />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-white rounded-full shadow-md z-10"
-            onClick={prevSlide}
+          {/* Prev Button */}
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
           >
-            <ChevronLeft className="h-6 w-6" />
-            <span className="sr-only">Previous slide</span>
-          </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="bg-white rounded-full shadow-md"
+              onClick={prevSlide}
+            >
+              <ChevronLeft className="h-6 w-6" />
+              <span className="sr-only">Previous slide</span>
+            </Button>
+          </motion.div>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-white rounded-full shadow-md z-10"
-            onClick={nextSlide}
+          {/* Next Button */}
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10"
           >
-            <ChevronRight className="h-6 w-6" />
-            <span className="sr-only">Next slide</span>
-          </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="bg-white rounded-full shadow-md"
+              onClick={nextSlide}
+            >
+              <ChevronRight className="h-6 w-6" />
+              <span className="sr-only">Next slide</span>
+            </Button>
+          </motion.div>
         </div>
-
-        {/* <div className="flex justify-center mt-6 space-x-2">
-          {Array.from({ length: totalImages - visibleImages + 1 }).map(
-            (_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={cn(
-                  "w-3 h-3 rounded-full transition-all",
-                  currentIndex === index ? "bg-pink-500" : "bg-gray-300"
-                )}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            )
-          )}
-        </div> */}
       </div>
     </section>
   );
