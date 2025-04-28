@@ -1,4 +1,7 @@
+"use client";
+
 import { Zap, Palette, Sparkles, Clock } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function FeaturesSection() {
   const features = [
@@ -28,31 +31,71 @@ export function FeaturesSection() {
     },
   ];
 
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.2, // các card vào lần lượt
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+  };
+
   return (
     <section className="py-16 bg-gray-100/50 my-8 rounded-xl">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">
+        {/* Tiêu đề */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+          className="text-center mb-12"
+        >
+          <motion.h2
+            variants={itemVariants}
+            className="text-3xl font-bold text-primary mb-4"
+          >
             Why Choose AI Logo Maker?
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+          >
             Our AI Logo Maker combines advanced technology with intuitive design
             to deliver the best logo creation experience.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Feature cards */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
               className="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
