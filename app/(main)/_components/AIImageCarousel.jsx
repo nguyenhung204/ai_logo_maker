@@ -9,27 +9,27 @@ import { Button } from "@/components/ui/button";
 const aiGeneratedImages = [
   {
     id: 1,
-    src: "/imgs-for-carousel-and-readme/img-4.png",
+    src: "/carousel-imgs/img-4.png",
     alt: "AI generated logo for a restaurant",
   },
   {
     id: 2,
-    src: "/imgs-for-carousel-and-readme/img-5.png",
+    src: "/carousel-imgs/img-5.png",
     alt: "AI generated logo for a tech company",
   },
   {
     id: 3,
-    src: "/imgs-for-carousel-and-readme/img-2.png",
+    src: "/carousel-imgs/img-2.png",
     alt: "AI generated logo for a restaurant",
   },
   {
     id: 4,
-    src: "/imgs-for-carousel-and-readme/img-3.png",
+    src: "/carousel-imgs/img-3.png",
     alt: "AI generated logo for a tech company",
   },
   {
     id: 5,
-    src: "/imgs-for-carousel-and-readme/img-6.png",
+    src: "/carousel-imgs/img-6.png",
     alt: "AI generated logo for a restaurant",
   },
 ];

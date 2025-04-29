@@ -25,7 +25,7 @@ export default function Header() {
 
   const navItems = [
     { title: "Home", href: "/" },
-    { title: "Logo Generator", href: "/create" },
+    { title: "Logo Maker", href: "/create" },
     { title: "Buy Credits", href: "/buy-credits" },
     { title: "About", href: "/about" },
   ];
@@ -61,7 +61,6 @@ export default function Header() {
       </>
     );
   };
-
 
   const renderMobileAuth = () => {
     if (!user) {
@@ -107,11 +106,10 @@ export default function Header() {
         <div className="flex w-1/4 items-center">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="Logo"
-              width={0}
-              height={0}
-              className="w-fit"
+              width={128}
+              height={128}
               priority
             />
           </Link>
