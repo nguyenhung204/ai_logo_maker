@@ -75,7 +75,7 @@ function LogoIdea({ formData, onHandleInputChange }) {
 
             <button
               onClick={generateLogoDesignIdea}
-              className="text-muted-foreground hover:text-primary transition bg-primary text-white text-center px-5 rounded-lg"
+              className="text-muted-foreground transition bg-primary text-white text-center px-5 rounded-lg hover:-translate-y-0.5 transform duration-300 ease-in-out"
             >
               <RotateCwIcon className="w-5 h-5" />
             </button>

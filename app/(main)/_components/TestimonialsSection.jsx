@@ -9,7 +9,7 @@ export function TestimonialsSection() {
     {
       name: "John Miller",
       role: "Founder, TechStart",
-      image: "/imgs-for-testimonials-section/john-miller.png",
+      image: "/testimonials-imgs/john-miller.png",
       content:
         "AI Logo Maker helped me create a professional logo for my startup within minutes. It saved me a lot of time and cost!",
       rating: 5,
@@ -17,7 +17,7 @@ export function TestimonialsSection() {
     {
       name: "Emily Chen",
       role: "Marketing Manager, FoodCo",
-      image: "/imgs-for-testimonials-section/emily-chen.png",
+      image: "/testimonials-imgs/emily-chen.png",
       content:
         "I've tried many logo creation tools, but AI Logo Maker truly stands out with its user-friendly interface and high-quality results.",
       rating: 5,
@@ -25,7 +25,7 @@ export function TestimonialsSection() {
     {
       name: "David Nguyen",
       role: "Freelance Designer",
-      image: "/imgs-for-testimonials-section/david-nguyen.png",
+      image: "/testimonials-imgs/david-nguyen.png",
       content:
         "Even with my design experience, I'm impressed by AI Logo Maker's capabilities. I now use it to quickly generate initial concepts.",
       rating: 4,

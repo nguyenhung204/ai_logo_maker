@@ -9,8 +9,8 @@ function LogoDesigns({ onHandleInputChange, formData }) {
   return (
     <div className="my-10">
       <HeadingDescription
-        title={Lookup.LogoDescTitle}
-        description={Lookup.LogoDesignDesc}
+        title={Lookup.LogoIdeaTitle}
+        description={Lookup.LogoIdeaDesc}
       />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-10 mt-10">
         {LogoDesignSample.map((design, index) => (
