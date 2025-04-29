@@ -1,6 +1,7 @@
 import { db } from "@/config/FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
+import { Timestamp } from "firebase/firestore";
 
 export async function POST(req) {
   const { userEmail, userName } = await req.json();
@@ -16,7 +17,7 @@ export async function POST(req) {
         credits: 5,
         role: "member",
         createdAt: Timestamp.now(),
-        status : "active"
+        status: "active",
       };
       await setDoc(doc(db, "users", userEmail), {
         ...data,
