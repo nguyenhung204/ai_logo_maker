@@ -16,7 +16,7 @@ function CreateLogo() {
   const [showContinueModal, setShowContinueModal] = useState(false);
   const [savedFormData, setSavedFormData] = useState(null);
 
-  // Khi mount lần đầu
+  // Sự kiện khi giao diện được Mount
   useEffect(() => {
     const saved = localStorage.getItem("formData");
     if (saved) {
@@ -24,6 +24,13 @@ function CreateLogo() {
       setShowContinueModal(true);
     }
   }, []);
+
+  // Sự kiện khi formData thay đổi
+  useEffect(() => {
+    if (formData) {
+      localStorage.setItem("formData", JSON.stringify(formData));
+    }
+  }, [formData]);
 
   // User chọn "Tiếp tục phiên cũ"
   const handleContinue = () => {
@@ -44,6 +51,7 @@ function CreateLogo() {
     setShowContinueModal(false);
   };
 
+  // Lưu lựa chọn của User theo input
   const onHandleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -51,6 +59,7 @@ function CreateLogo() {
     }));
   };
 
+  // Lưu lựa chọn của User theo nút "Next"
   const onNextStep = () => {
     setStep((prev) => {
       const nextStep = prev + 1;
@@ -59,22 +68,13 @@ function CreateLogo() {
     });
   };
 
+  // Lưu lựa chọn của User theo nút "Previous"
   const onPrevStep = () => {
     setStep((prev) => {
       const prevStep = prev - 1;
       setFormData((prev) => ({ ...prev, currentStep: prevStep }));
       return prevStep;
     });
-  };
-
-  useEffect(() => {
-    if (formData) {
-      saveFormDataToLocalStorage(formData);
-    }
-  }, [formData]);
-
-  const saveFormDataToLocalStorage = (formData) => {
-    localStorage.setItem("formData", JSON.stringify(formData));
   };
 
   const totalSteps = 6;
