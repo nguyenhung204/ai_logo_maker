@@ -128,13 +128,14 @@ export default function Header() {
         {/* Center nav */}
         <nav className="hidden w-2/4 md:block">
           <ul className="flex justify-center space-x-8 items-center">
-            {navItems.map((item) =>
-              item.children ? (
-                <li key={item.title}>
+            {navItems.map((item) => {
+              const key = `${item.title}-${item.href || "group"}`;
+              return item.children ? (
+                <li key={key}>
                   <ToolsDropdown items={item.children} label={item.title} />
                 </li>
               ) : (
-                <li key={item.href}>
+                <li key={key}>
                   <Link
                     href={item.href}
                     className={`text-sm font-medium transition-colors hover:text-primary ${
@@ -146,8 +147,8 @@ export default function Header() {
                     {item.title}
                   </Link>
                 </li>
-              )
-            )}
+              );
+            })}
           </ul>
         </nav>
 
@@ -169,16 +170,39 @@ export default function Header() {
               </SheetHeader>
 
               <nav className="flex flex-col gap-4 pt-8">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-lg font-medium"
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.title}
-                  </Link>
-                ))}
+                {navItems.map((item) => {
+                  const key = `${item.title}-${item.href || "group"}`;
+
+                  if (item.children) {
+                    return (
+                      <div key={key} className="flex flex-col gap-1">
+                        <span className="font-semibold">{item.title}</span>
+                        {item.children.map((child) => (
+                          <Link
+                            key={`${child.title}-${child.href}`}
+                            href={child.href}
+                            className="pl-4 text-sm text-muted-foreground"
+                            onClick={() => setOpen(false)}
+                          >
+                            {child.title}
+                          </Link>
+                        ))}
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={key}
+                      href={item.href}
+                      className="text-lg font-medium"
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.title}
+                    </Link>
+                  );
+                })}
+
                 <div className="mt-4 flex flex-col gap-2">
                   {renderMobileAuth()}
                 </div>
