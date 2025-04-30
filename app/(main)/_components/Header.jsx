@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { UserDetailContext } from "../_context/UserDetailContext";
+import ToolsDropdown from "./ToolsDropdown";
 
 export default function Header() {
   const { user } = useUser();
@@ -27,8 +28,17 @@ export default function Header() {
     { title: "Home", href: "/" },
     { title: "Logo Maker", href: "/create" },
     { title: "Buy Credits", href: "/buy-credits" },
+    {
+      title: "Tools",
+      children: [
+        { title: "🖌️ Edit Image", href: "/tools/edit" },
+        { title: "🎨 Extract Colors", href: "/tools/extract-color" },
+        { title: "✂️ Remove BG", href: "/tools/remove-bg" },
+      ],
+    },
     { title: "About", href: "/about" },
   ];
+
   const renderDesktopAuth = () => {
     if (!user) {
       return (
@@ -117,21 +127,27 @@ export default function Header() {
 
         {/* Center nav */}
         <nav className="hidden w-2/4 md:block">
-          <ul className="flex justify-center space-x-8">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === item.href
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
+          <ul className="flex justify-center space-x-8 items-center">
+            {navItems.map((item) =>
+              item.children ? (
+                <li key={item.title}>
+                  <ToolsDropdown items={item.children} label={item.title} />
+                </li>
+              ) : (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`text-sm font-medium transition-colors hover:text-primary ${
+                      pathname === item.href
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </nav>
 

@@ -4,10 +4,12 @@ import { UserDetailContext } from "../../_context/UserDetailContext";
 import { collection, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import { db } from "@/config/FirebaseConfig";
+import { useRouter } from "next/navigation";
 
 function LogoList() {
   const { userDetail } = useContext(UserDetailContext);
   const [logoList, setLogoList] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     userDetail && GetUserLogos();
@@ -39,7 +41,7 @@ function LogoList() {
 
   const handleEditLogo = (imageBase64) => {
     localStorage.setItem("editImage", imageBase64);
-    window.location.href = "/edit";
+    router.push("/tools/edit");
   };
 
   return (
