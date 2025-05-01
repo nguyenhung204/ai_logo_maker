@@ -24,7 +24,7 @@ export default function ExtractPalettePage() {
 
   const handleImageLoad = async () => {
     try {
-      setLoading(true); // 👉 Bắt đầu loading
+      setLoading(true);
       const VibrantModule = await import("node-vibrant/browser");
       const Vibrant = VibrantModule.Vibrant;
 
@@ -39,7 +39,7 @@ export default function ExtractPalettePage() {
     } catch (error) {
       console.error("Color extraction failed:", error);
     } finally {
-      setLoading(false); // 👉 Dừng loading
+      setLoading(false);
     }
   };
 
@@ -68,10 +68,24 @@ export default function ExtractPalettePage() {
         {!imgSrc && (
           <label
             htmlFor="upload"
-            className="flex flex-col items-center justify-center border-2 border-dashed border-primary text-primary cursor-pointer rounded-xl p-8 hover:bg-primary/10 transition mb-6"
+            onClick={handleOpenUpload}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  setImgSrc(e.target.result);
+                  setColors([]);
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+            className="flex flex-col items-center justify-center border-2 border-dashed border-primary text-primary cursor-pointer rounded-xl p-8 hover:bg-primary/10 transition mb-6 h-[300px]"
           >
             <UploadCloud className="w-10 h-10 mb-2" />
-            <span className="font-medium">
+            <span className="font-medium text-center">
               Click or drag image here to upload
             </span>
           </label>
@@ -79,13 +93,13 @@ export default function ExtractPalettePage() {
 
         {/* Show image & button */}
         {imgSrc && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center justify-evenly h-[400px]">
             <img
               ref={imgRef}
               src={imgSrc}
               alt="Uploaded"
               onLoad={handleImageLoad}
-              className="max-w-sm mb-4 rounded-xl shadow"
+              className="max-w-sm mb-4 rounded-xl shadow h-[300px]"
             />
 
             <button
@@ -107,7 +121,7 @@ export default function ExtractPalettePage() {
 
         {/* Color palette */}
         {!loading && colors.length > 0 && (
-          <div className="flex gap-4 flex-wrap mt-4 justify-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 mx-auto w-fit">
             {colors.map(({ name, hex }, i) => (
               <div
                 key={i}
