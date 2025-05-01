@@ -59,7 +59,7 @@ export default function RemoveBgPage() {
         {!original && (
           <label
             onClick={triggerUpload}
-            className="flex flex-col items-center justify-center border-2 border-dashed border-primary text-primary cursor-pointer rounded-xl p-8 hover:bg-primary/10 transition"
+            className="flex flex-col items-center justify-center border-2 border-dashed border-primary text-primary cursor-pointer rounded-xl p-8 hover:bg-primary/10 transition h-[300px]"
           >
             <UploadCloud className="w-10 h-10 mb-2" />
             <span className="font-medium">Click to upload image</span>
@@ -70,7 +70,10 @@ export default function RemoveBgPage() {
           <div className="flex flex-col items-center gap-4">
             <div className="text-center">
               <p className="font-semibold mb-2">Original Image</p>
-              <img src={original} className="max-w-xs rounded-xl shadow" />
+              <img
+                src={original}
+                className="max-w-xs rounded-xl shadow h-[300px]"
+              />
             </div>
 
             {isLoading ? (
