@@ -26,7 +26,6 @@ const GenerateLogo = () => {
         const storage = localStorage.getItem("formData");
         if (storage) {
           setFormData(JSON.parse(storage));
-          console.log(JSON.parse(storage));
         } else {
           router.push("/create");
         }
