@@ -43,16 +43,16 @@ export default function RightSettings({ selectedObject, canvas }) {
     };
 
     canvas.on("object:modified", handleUpdate);
-    canvas.on("object:scaling", handleUpdate);
-    canvas.on("object:moving", handleUpdate);
-    canvas.on("object:rotating", handleUpdate);
+    canvas.on("object:scaling", handleTransforming);
+    canvas.on("object:moving", handleTransforming);
+    canvas.on("object:rotating", handleTransforming);
     canvas.on("text:changed", handleUpdate);
 
     return () => {
       canvas.off("object:modified", handleUpdate);
-      canvas.off("object:scaling", handleUpdate);
-      canvas.off("object:moving", handleUpdate);
-      canvas.off("object:rotating", handleUpdate);
+      canvas.off("object:scaling", handleTransforming);
+      canvas.off("object:moving", handleTransforming);
+      canvas.off("object:rotating", handleTransforming);
       canvas.off("text:changed", handleUpdate);
     };
   }, [canvas]);
@@ -110,6 +110,19 @@ export default function RightSettings({ selectedObject, canvas }) {
     }
 
     canvas.requestRenderAll();
+    syncObjectState();
+  }
+
+  function handleTransforming(e) {
+    if (!e?.target) return;
+
+    const obj = e.target;
+
+    setWidth(Math.round(obj.width * obj.scaleX));
+    setHeight(Math.round(obj.height * obj.scaleY));
+    setX(Math.round(obj.left));
+    setY(Math.round(obj.top));
+    setAngle(Math.round(obj.angle || 0));
   }
 
   return (
