@@ -1,15 +1,33 @@
 export default [
   {
+    title: "Pixel Art / 8-bit Logos",
+    image: "/design-sample-imgs/design_10.png",
+    prompt:
+      "Create logos in a pixel art or 8-bit style, using blocky and colorful designs. The logos should feel playful and nostalgic, perfect for retro-themed brands, gaming companies, and digital collectibles. Ensure readability and recognizability at small sizes.",
+  },
+  {
     title: "Cartoon Logo",
     image: "/design-sample-imgs/design_1.png",
     prompt:
       "Create a set of vibrant, playful logo designs featuring cartoon-style characters with puns or witty text. Each logo should include a cute anthropomorphic object, animal, or food item with expressive features like sunglasses, hats, or smiles. Incorporate a short, pun-based slogan that complements the character's personality. Use bold, contrasting colors that make the design eye-catching. Ensure clean lines and retro aesthetics, with a dark background to make the colors pop. The design should be clear, fun, and easily recognizable even in small sizes.",
   },
   {
+    title: "Racing / Speed Logos",
+    image: "/design-sample-imgs/design_11.png",
+    prompt:
+      "Design logos featuring fast cars, arrows, and speed lines. Use dynamic compositions that convey adrenaline, speed, and excitement. The design should remain energetic, sharp, and modern",
+  },
+  {
     title: "App Logo",
     image: "/design-sample-imgs/design_2.png",
     prompt:
       "Create a vibrant and playful 3D logo for an app, focusing on bold, colorful text with a glossy finish. The logo should incorporate an icon relevant to the app’s theme, placed above the text. The background should complement the concept, with a bright outdoor scene featuring elements like green grass, a blue sky, and fluffy white clouds. Use a rounded square frame with a yellow border and subtle shadows for a polished, inviting look. Ensure the logo works well at various sizes, especially on mobile devices.",
+  },
+  {
+    title: "Futuristic Sci-fi Logos",
+    image: "/design-sample-imgs/design_12.png",
+    prompt:
+      "Generate logos using clean lines and geometric shapes with glowing edges. Include themes like space, AI, and exploration.",
   },
   {
     title: "Modern Mascot Logos",

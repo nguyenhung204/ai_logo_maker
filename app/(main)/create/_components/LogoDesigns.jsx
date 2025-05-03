@@ -20,20 +20,20 @@ function LogoDesigns({ onHandleInputChange, formData }) {
               setSelectedOption(design.title);
               onHandleInputChange(design);
             }}
-            className={`cursor-pointer border-2 transition-transform duration-300 hover:scale-105 ${
-              selectedOption == design.title
-                ? "rounded-lg border-primary"
-                : "border-transparent"
-            } `}
+            className="cursor-pointer transition-transform duration-300 hover:scale-105"
           >
             <Image
               src={design?.image}
               alt={design?.title}
-              width={150}
-              height={150}
-              className="w-full rounded-xl object-cover"
+              width={100}
+              height={100}
+              className={`w-full mx-auto border-4  ${
+                selectedOption == design.title
+                  ? "rounded-lg border-primary scale-105"
+                  : "border-transparent"
+              }`}
             />
-            <h2 className="text-md lg:text-xl text-primary text-center mt-2 font-bold">
+            <h2 className="text-md lg:text-lg text-primary text-center mt-2 font-semibold break-words  max-w-[150px] mx-auto">
               {design.title}
             </h2>
           </div>

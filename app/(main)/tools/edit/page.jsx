@@ -39,20 +39,22 @@ export default function EditorPage() {
   }, [canvas]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden ">
+    <div className="flex flex-col h-screen">
       <TopBar canvas={canvas} />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-auto">
         <LeftToolbar canvas={canvas} />
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex-grow">
           <CanvasEditor
             setCanvas={setCanvas}
             setSelectedObject={setSelectedObject}
           />
         </div>
 
-        <RightSettings selectedObject={selectedObject} canvas={canvas} />
+        <div className="">
+          <RightSettings selectedObject={selectedObject} canvas={canvas} />
+        </div>
       </div>
     </div>
   );

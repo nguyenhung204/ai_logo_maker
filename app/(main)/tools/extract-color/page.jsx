@@ -68,7 +68,6 @@ export default function ExtractPalettePage() {
         {!imgSrc && (
           <label
             htmlFor="upload"
-            onClick={handleOpenUpload}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();

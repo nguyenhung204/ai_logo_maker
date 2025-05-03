@@ -179,26 +179,6 @@ export function Footer() {
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
             &copy; {currentYear} AI Logo Maker. All rights reserved.
           </p>
-          <div className="flex space-x-6">
-            <Link
-              href="/privacy-policy"
-              className="text-gray-500 hover:text-pink-400 text-sm transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms-of-service"
-              className="text-gray-500 hover:text-pink-400 text-sm transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/cookies"
-              className="text-gray-500 hover:text-pink-400 text-sm transition-colors"
-            >
-              Cookies
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
