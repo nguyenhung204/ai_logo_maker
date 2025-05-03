@@ -1,25 +1,42 @@
 import { db } from "@/config/FirebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, collection } from "firebase/firestore";
 import { NextResponse } from "next/server";
+import { Timestamp } from "firebase/firestore";
 
 export async function POST(req) {
-  const { userEmail, packageCredits } = await req.json();
+  const { userEmail, packageDetails } = await req.json();
+
   try {
-    const docRef = doc(db, "users", userEmail);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      console.log(data);
+    const userRef = doc(db, "users", userEmail);
+    const userSnap = await getDoc(userRef);
 
-      const newCredits = Number(data.credits) + packageCredits;
-      const docRef = doc(db, "users", userEmail);
-      await updateDoc(docRef, {
-        credits: newCredits,
+    if (!userSnap.exists()) {
+      return new Response(JSON.stringify({ error: "User not found" }), {
+        status: 404,
       });
-
-      const newDocSnap = await getDoc(docRef);
-      return NextResponse.json(newDocSnap.data(), { status: 200 });
     }
+
+    const userData = userSnap.data();
+    const newCredits = Number(userData.credits) + packageDetails.credits;
+
+    await updateDoc(userRef, { credits: newCredits });
+
+    const transactionRef = doc(
+      collection(db, "users", userEmail, "transactions"),
+      Date.now().toString()
+    );
+
+    await setDoc(transactionRef, {
+      price: packageDetails.price,
+      credits: packageDetails.credits,
+      package: packageDetails.name,
+      date: Timestamp.now(),
+      status: "Completed",
+    });
+
+    const updatedUserSnap = await getDoc(userRef);
+
+    return NextResponse.json(updatedUserSnap.data(), { status: 200 });
   } catch (error) {
     console.error("Error:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {

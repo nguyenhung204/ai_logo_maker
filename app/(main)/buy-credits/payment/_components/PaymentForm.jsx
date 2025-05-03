@@ -69,9 +69,9 @@ export default function PaymentForm() {
     }
     setIsSubmitting(true);
 
-    const result = await axios.post("/api/process-payment", {
+    await axios.post("/api/process-payment", {
       userEmail: userDetail?.email,
-      packageCredits: selectedPackage.credits,
+      packageDetails: selectedPackage,
     });
 
     await refreshUserData();
@@ -86,13 +86,11 @@ export default function PaymentForm() {
         cvc: "",
       });
       setIsSubmitting(false);
-    }, 2000);
+    }, 1500);
   };
 
   // Sự kiện hiển thị modal
   const [showSuccess, setShowSuccess] = useState(false);
-
-  console.log(userDetail);
 
   return (
     <div className="w-fit md:w-2/3 lg:w-2/5 mx-auto">
