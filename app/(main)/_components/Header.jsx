@@ -102,8 +102,22 @@ export default function Header() {
             </Button>
           </Link>
         )}
-        <div className="flex justify-center py-2">
+
+        <div className="flex justify-evenly py-2">
           <UserButton afterSignOutUrl="/" />
+
+          <div className="flex items-center gap-2 bg-yellow-300 px-3 py-1.5 rounded-full shadow-md w-fit">
+            <Image
+              src="/coin.png"
+              alt="coin"
+              width={20}
+              height={20}
+              className="w-5 h-5 object-contain"
+            />
+            <h2 className="font-bold text-white text-sm">
+              {userDetail?.credits}
+            </h2>
+          </div>
         </div>
       </>
     );
@@ -149,6 +163,23 @@ export default function Header() {
                 </li>
               );
             })}
+
+            {userDetail && (
+              <div className="flex items-center gap-2 bg-yellow-300 px-3 py-1.5 rounded-full shadow-md">
+                <Image
+                  src="/coin.png"
+                  alt="coin"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 object-contain"
+                />
+                <h2 className="font-bold text-white text-sm">
+                  {userDetail?.credits}
+                </h2>
+              </div>
+            )}
+
+            <div></div>
           </ul>
         </nav>
 
@@ -169,24 +200,28 @@ export default function Header() {
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               </SheetHeader>
 
-              <nav className="flex flex-col gap-4 pt-8">
+              <nav className="flex flex-col gap-6 pt-8">
                 {navItems.map((item) => {
                   const key = `${item.title}-${item.href || "group"}`;
 
                   if (item.children) {
                     return (
-                      <div key={key} className="flex flex-col gap-1">
-                        <span className="font-semibold">{item.title}</span>
-                        {item.children.map((child) => (
-                          <Link
-                            key={`${child.title}-${child.href}`}
-                            href={child.href}
-                            className="pl-4 text-sm text-muted-foreground"
-                            onClick={() => setOpen(false)}
-                          >
-                            {child.title}
-                          </Link>
-                        ))}
+                      <div key={key} className="flex flex-col gap-2">
+                        <span className="font-semibold text-gray-800 text-base">
+                          {item.title}
+                        </span>
+                        <div className="flex flex-col gap-1 pl-3 border-l-2 border-gray-200">
+                          {item.children.map((child) => (
+                            <Link
+                              key={`${child.title}-${child.href}`}
+                              href={child.href}
+                              className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                              onClick={() => setOpen(false)}
+                            >
+                              {child.title}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     );
                   }
@@ -195,18 +230,20 @@ export default function Header() {
                     <Link
                       key={key}
                       href={item.href}
-                      className="text-lg font-medium"
+                      className="text-base font-semibold text-gray-800 hover:text-primary transition-colors"
                       onClick={() => setOpen(false)}
                     >
                       {item.title}
                     </Link>
                   );
                 })}
-
-                <div className="mt-4 flex flex-col gap-2">
-                  {renderMobileAuth()}
-                </div>
               </nav>
+
+              <hr className="my-4" />
+
+              <div className="mt-4 flex flex-col gap-2">
+                {renderMobileAuth()}
+              </div>
             </SheetContent>
           </Sheet>
         </div>
