@@ -24,7 +24,7 @@ import StatisticsFilters from "./StatisticsFilters";
 
 export default function StatisticsContainer() {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPeriod, setSelectedPeriod] = useState("30days");
+  const [selectedPeriod, setSelectedPeriod] = useState("7days");
   const [statistics, setStatistics] = useState({
     totalRevenue: 0,
     totalUsers: 0,
