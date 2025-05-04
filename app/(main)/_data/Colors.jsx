@@ -1,6 +1,6 @@
 export default [
   {
-    name: "Let Us Select (Bright Red, Vibrant Green, Electric Blue, Hot Pink, Lemon Yellow)",
+    name: "Rainbows (Bright Red, Vibrant Green, Electric Blue, Hot Pink, Lemon Yellow)",
     colors: ["#ff5733", "#33ff57", "#3357ff", "#ff33a8", "#f4ff33"],
   },
   {

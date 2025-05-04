@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/button";
 
 const aiGeneratedImages = [
   {
+    id: 6,
+    src: "/logo-generated-imgs/img-1.png",
+    alt: "AI generated logo for an application",
+  },
+  {
     id: 1,
     src: "/logo-generated-imgs/img-4.png",
     alt: "AI generated logo for a restaurant",
@@ -20,7 +25,12 @@ const aiGeneratedImages = [
   {
     id: 3,
     src: "/logo-generated-imgs/img-2.png",
-    alt: "AI generated logo for a restaurant",
+    alt: "AI generated logo for a sport team",
+  },
+  {
+    id: 7,
+    src: "/logo-generated-imgs/img-7.png",
+    alt: "AI generated logo for a security team",
   },
   {
     id: 4,
@@ -30,7 +40,7 @@ const aiGeneratedImages = [
   {
     id: 5,
     src: "/logo-generated-imgs/img-6.png",
-    alt: "AI generated logo for a restaurant",
+    alt: "AI generated logo for a tech company",
   },
 ];
 
