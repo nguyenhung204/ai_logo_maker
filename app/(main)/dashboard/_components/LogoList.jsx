@@ -33,7 +33,18 @@ function LogoList() {
   const downloadImage = (imageUrl, title) => {
     const link = document.createElement("a");
     link.href = imageUrl;
-    link.download = title || "logo";
+    
+    // Limit title length for download filename
+    let downloadName = title || "logo";
+    
+    // If title is too long, use only the first 2-3 words
+    if (title && title.length > 20) {
+      const words = title.split(' ');
+      // Take first 2 words if available, or just the first word if only one exists
+      downloadName = words.slice(0, Math.min(3, words.length)).join('_');
+    }
+    
+    link.download = downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -61,10 +72,10 @@ function LogoList() {
                   className="w-full rounded-xl shadow-lg mb-4"
                   onClick={() => ViewLogo(logo?.image)}
                 />
-                <h2 className="text-center text-lg font-medium mt-2">
+                <h2 className="text-center text-lg font-medium mt-2 truncate mx-2" title={logo?.title}>
                   {logo?.title}
                 </h2>
-                <p className="text-sm text-gray-500 text-center text-ellipsis max-w-sm overflow-hidden whitespace-nowrap">
+                <p className="text-sm text-gray-500 text-center truncate mx-auto px-2" title={logo?.desc}>
                   {logo?.desc}
                 </p>
 

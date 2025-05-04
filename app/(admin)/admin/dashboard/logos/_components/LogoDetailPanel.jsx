@@ -21,7 +21,18 @@ export default function LogoDetailPanel({ logo, onClose, onDeleteLogo }) {
     
     const link = document.createElement('a');
     link.href = logo.previewUrl;
-    link.download = logo.title || "logo";
+    
+    // Limit title length for download filename
+    let downloadName = logo.title || "logo";
+    
+    // If title is too long, use only the first 2-3 words
+    if (logo.title && logo.title.length > 20) {
+      const words = logo.title.split(' ');
+      // Take first 2-3 words if available
+      downloadName = words.slice(0, Math.min(3, words.length)).join('_');
+    }
+    
+    link.download = downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -44,7 +55,9 @@ export default function LogoDetailPanel({ logo, onClose, onDeleteLogo }) {
             </div>
           )}
         </div>
-        <h3 className="text-xl font-semibold">{logo.title}</h3>
+        <h3 className="text-xl font-semibold break-words max-w-[280px] text-center" title={logo.title}>
+          {logo.title && logo.title.length > 50 ? `${logo.title.substring(0, 50)}...` : logo.title}
+        </h3>
       </div>
 
       <Separator />
@@ -53,7 +66,9 @@ export default function LogoDetailPanel({ logo, onClose, onDeleteLogo }) {
         <div className="flex items-center gap-2">
           <Type className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium">Desc:</span>
-          <span className="text-sm">{logo.logoType || "Unknown"}</span>
+          <span className="text-sm truncate max-w-[200px]" title={logo.logoType || "Unknown"}>
+            {logo.logoType || "Unknown"}
+          </span>
         </div>
         
         <div className="flex items-center gap-2">

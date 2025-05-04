@@ -37,7 +37,18 @@ export default function LogoActions({
     
     const link = document.createElement('a');
     link.href = logo.previewUrl;
-    link.download = logo.title || "logo";
+    
+    // Limit title length for download filename
+    let downloadName = logo.title || "logo";
+    
+    // If title is too long, use only the first 2-3 words
+    if (logo.title && logo.title.length > 20) {
+      const words = logo.title.split(' ');
+      // Take first 2-3 words if available
+      downloadName = words.slice(0, Math.min(3, words.length)).join('_');
+    }
+    
+    link.download = downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

@@ -149,7 +149,9 @@ const GenerateLogo = () => {
               />
               <a
                 href={url}
-                download={`${formData.title}.png`}
+                download={formData.title && formData.title.length > 20 
+                  ? formData.title.split(' ').slice(0, Math.min(3, formData.title.split(' ').length)).join('_') + '.png'
+                  : `${formData.title}.png`}
                 className="inline-block mt-3 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition"
               >
                 Download

@@ -71,7 +71,9 @@ export default function RecentLogos({ recentLogos, isLoading, formatDate }) {
                   {logo.previewUrl && (
                     <a 
                       href={logo.previewUrl}
-                      download={`${logo.title}.png`}
+                      download={logo.title && logo.title.length > 20 
+                        ? logo.title.split(' ').slice(0, Math.min(3, logo.title.split(' ').length)).join('_') + '.png'
+                        : `${logo.title}.png`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
