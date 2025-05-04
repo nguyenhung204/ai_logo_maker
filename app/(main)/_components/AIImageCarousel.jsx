@@ -163,9 +163,10 @@ export function AIImageCarousel({
           </div>
 
           {/* Prev Button */}
-          <motion.div
+          <div
             whileHover={{ scale: 1.1 }}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10"
+            style={{ transformOrigin: "center" }}
           >
             <Button
               variant="outline"
@@ -176,12 +177,13 @@ export function AIImageCarousel({
               <ChevronLeft className="h-6 w-6" />
               <span className="sr-only">Previous slide</span>
             </Button>
-          </motion.div>
+          </div>
 
           {/* Next Button */}
-          <motion.div
+          <div
             whileHover={{ scale: 1.1 }}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
+            style={{ transformOrigin: "center" }}
           >
             <Button
               variant="outline"
@@ -192,7 +194,7 @@ export function AIImageCarousel({
               <ChevronRight className="h-6 w-6" />
               <span className="sr-only">Next slide</span>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

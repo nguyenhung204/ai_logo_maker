@@ -59,12 +59,20 @@ export default function LogoTable({
                 )}
               </div>
             </TableCell>
-            <TableCell className="font-medium">{logo.title}</TableCell>
-            <TableCell>{logo.logoType || "Unknown"}</TableCell>
+            <TableCell className="font-medium max-w-[200px]">
+              <div className="truncate" title={logo.title}>{logo.title}</div>
+            </TableCell>
+            <TableCell className="max-w-[180px]">
+              <div className="truncate" title={logo.logoType || "Unknown"}>{logo.logoType || "Unknown"}</div>
+            </TableCell>
             <TableCell>
               <div>
-                <div className="font-medium">{logo.userName || "Unknown"}</div>
-                <div className="text-sm text-muted-foreground">{logo.userEmail}</div>
+                <div className="font-medium truncate max-w-[150px]" title={logo.userName || "Unknown"}>
+                  {logo.userName || "Unknown"}
+                </div>
+                <div className="text-sm text-muted-foreground truncate max-w-[150px]" title={logo.userEmail}>
+                  {logo.userEmail}
+                </div>
               </div>
             </TableCell>
             <TableCell>
