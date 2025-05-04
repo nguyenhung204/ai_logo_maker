@@ -20,7 +20,7 @@ export function Footer() {
     <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-300">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <div className="flex items-center bg-white w-fit rounded-lg mb-4">
               <Link href={"/"}>
                 <Image
@@ -72,7 +72,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold mb-4 text-white border-b border-pink-500 pb-2 inline-block">
               Quick Links
             </h3>
@@ -80,7 +80,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <ExternalLink size={14} className="mr-2" />
                   <span>Home</span>
@@ -89,7 +89,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/create"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <ExternalLink size={14} className="mr-2" />
                   <span>Logo Generator</span>
@@ -98,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/buy-credits"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <ExternalLink size={14} className="mr-2" />
                   <span>Buy Credits</span>
@@ -107,7 +107,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <ExternalLink size={14} className="mr-2" />
                   <span>About</span>
@@ -115,7 +115,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold mb-4 text-white border-b border-pink-500 pb-2 inline-block">
               Technologies
             </h3>
@@ -138,7 +138,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold mb-4 text-white border-b border-pink-500 pb-2 inline-block">
               Contact Us
             </h3>
@@ -146,7 +146,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:info@ailogomaker.com"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <Mail size={16} className="mr-2" />
                   <span>info@ailogomaker.com</span>
@@ -155,14 +155,14 @@ export function Footer() {
               <li>
                 <a
                   href="tel:+84123456789"
-                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors"
+                  className="flex items-center text-gray-400 hover:text-pink-400 transition-colors justify-center md:justify-start"
                 >
                   <Phone size={16} className="mr-2" />
                   <span>+84 123 456 789</span>
                 </a>
               </li>
               <li className="pt-4">
-                <div className="bg-gray-800 rounded-lg p-4">
+                <div className="bg-gray-800 rounded-lg p-4 w-full">
                   <h4 className="text-white font-medium mb-2">Our Team</h4>
                   <p className="text-gray-400 text-sm mb-1">
                     🧑‍💻 Nguyễn Văn Hùng
@@ -175,8 +175,8 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-800 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm mb-4 md:mb-0">
+        <div className="border-t border-gray-800 mt-10 pt-8 flex flex-col md:flex-row justify-center md:justify-between items-center">
+          <p className="text-gray-500 text-sm mb-4 md:mb-0 text-center md:text-left">
             &copy; {currentYear} AI Logo Maker. All rights reserved.
           </p>
         </div>
