@@ -3,7 +3,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/generate-logo",
-  "/tools(.*)",  // Cập nhật để bảo vệ tất cả các trang con của tools
+  "/tools(.*)",
   "/admin(.*)",
   "/buy-credits/payment(.*)",
 ]);
