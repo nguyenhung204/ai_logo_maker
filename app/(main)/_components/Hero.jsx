@@ -163,7 +163,7 @@ export default function Hero() {
 
         {/* Footer Text */}
         <motion.div variants={item} className="mt-8 text-sm text-gray-500">
-          <p>No credit card required • Free to start • 100+ logo styles</p>
+          <p>No credit card required • Free to start • 10+ logo styles</p>
         </motion.div>
       </motion.div>
     </div>
