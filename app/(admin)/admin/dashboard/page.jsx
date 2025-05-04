@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { db } from "@/config/FirebaseConfig";
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  orderBy, 
-  limit, 
-  where, 
-  Timestamp, 
-  getCountFromServer
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  where,
+  Timestamp,
+  getCountFromServer,
 } from "firebase/firestore";
 
 // Import components
@@ -20,135 +20,140 @@ import CreditPackageGrid from "./_components/CreditPackageGrid";
 import RecentLogos from "./_components/RecentLogos";
 import RecentUsers from "./_components/RecentUsers";
 import RecentTransactions from "./_components/RecentTransactions";
-import TimeRangeSelector from "./_components/TimeRangeSelector";
 
-// Import icons
 import {
-  BarChart,
   Users,
   CreditCard,
   Image as ImageIcon,
-  DollarSign
+  DollarSign,
+  RefreshCw,
 } from "lucide-react";
 
+import { useAdminData, CACHE_KEYS } from "../_context/AdminDataContext";
+import { Button } from "@/components/ui/button";
+
 export default function AdminDashboard() {
-  const [timeRange, setTimeRange] = useState("week");
   const [isLoading, setIsLoading] = useState(true);
   const [recentLogos, setRecentLogos] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [statistics, setStatistics] = useState({
     revenue: 0,
-    previousRevenue: 0,
     logosCreated: 0,
-    previousLogos: 0,
     newUsers: 0,
-    previousUsers: 0,
     creditsPurchased: 0,
-    previousCredits: 0
   });
   const [logoTypes, setLogoTypes] = useState([]);
   const [packageCounts, setPackageCounts] = useState([]);
   
+  const { cachedData, isCacheValid, updateCachedData } = useAdminData();
+
   const creditPackages = [
-    { name: "Basic Package", credits: 20, price: "$4.99", image: "/buy-credits-logo-imgs/basic-package-logo.png" },
-    { name: "Standard Package", credits: 50, price: "$9.99", image: "/buy-credits-logo-imgs/standard-package-logo.png" },
-    { name: "Professional Package", credits: 100, price: "$29.99", image: "/buy-credits-logo-imgs/professional-package-logo.png" },
-    { name: "Advanced Package", credits: 200, price: "$59.99", image: "/buy-credits-logo-imgs/advanced-package-logo.png" }
+    {
+      name: "Basic Package",
+      credits: 5,
+      price: "$1.99",
+      image: "/buy-credits-logo-imgs/basic-package-logo.png",
+    },
+    {
+      name: "Standard Package",
+      credits: 20,
+      price: "$6.99",
+      image: "/buy-credits-logo-imgs/standard-package-logo.png",
+    },
+    {
+      name: "Professional Package",
+      credits: 50,
+      price: "$15.99",
+      image: "/buy-credits-logo-imgs/professional-package-logo.png",
+    },
+    {
+      name: "Advanced Package",
+      credits: 100,
+      price: "$29.99",
+      image: "/buy-credits-logo-imgs/advanced-package-logo.png",
+    },
   ];
-  
+
   useEffect(() => {
     fetchData();
-  }, [timeRange]);
-  
+  }, []);
+
   const fetchData = async () => {
     setIsLoading(true);
-    
     try {
-      const { startDate, previousStartDate } = getDateRange(timeRange);
-      
-      await fetchRecentUsers();
-      await fetchRecentLogos();
-      await fetchRecentTransactions();
-      await fetchStatistics(startDate, previousStartDate);
-      await fetchPackageDistribution();
-      
+      // Force refresh all data by not using cache
+      const users = await fetchRecentUsers(true);
+      const logos = await fetchRecentLogos(true);
+      await fetchRecentTransactions(true);
+      await fetchStatistics();
+      await fetchPackageDistribution(true);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setIsLoading(false);
     }
   };
-  
-  const getDateRange = (range) => {
-    const now = new Date();
-    let startDate, previousStartDate;
-    
-    switch(range) {
-      case "month":
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        previousStartDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-        break;
-      case "year":
-        startDate = new Date(now.getFullYear(), 0, 1);
-        previousStartDate = new Date(now.getFullYear() - 1, 0, 1);
-        break;
-      default:
-        const day = now.getDay();
-        startDate = new Date(now);
-        startDate.setDate(now.getDate() - day);
-        previousStartDate = new Date(startDate);
-        previousStartDate.setDate(startDate.getDate() - 7);
+
+  const fetchRecentLogos = async (forceRefresh = false) => {
+    // Sử dụng cache nếu có giá trị và không cần cập nhật
+    if (!forceRefresh && isCacheValid(CACHE_KEYS.RECENT_LOGOS)) {
+      const cachedLogos = cachedData[CACHE_KEYS.RECENT_LOGOS];
+      setRecentLogos(cachedLogos.recentLogos);
+      setLogoTypes(cachedLogos.logoTypes);
+      return cachedLogos.allLogos;
     }
-    
-    return { 
-      startDate: Timestamp.fromDate(startDate),
-      previousStartDate: Timestamp.fromDate(previousStartDate)
-    };
-  };
-  
-  const fetchRecentLogos = async () => {
+
     try {
       const usersSnapshot = await getDocs(collection(db, "users"));
       const logos = [];
-      
-      const logosPromises = usersSnapshot.docs.map(async (userDoc) => {
+
+      for (const userDoc of usersSnapshot.docs) {
         const userEmail = userDoc.id;
         const userData = userDoc.data();
-        
-        const logosQuery = query(
-          collection(db, "users", userEmail, "logos"),
-          orderBy("createdAt", "desc"),
-          limit(3)
-        );
-        
-        const logosSnapshot = await getDocs(logosQuery);
-        
-        logosSnapshot.forEach(doc => {
-          const logoData = doc.data();
-          logos.push({
-            id: doc.id,
-            title: logoData.title || "Untitled Logo",
-            previewUrl: logoData.image || "/design_1.png",
-            createdAt: logoData.createdAt?.toDate?.() 
-              ? logoData.createdAt.toDate().toISOString() 
-              : new Date().toISOString(),
-            userName: userData.name || "Unknown User",
-            userEmail: userEmail,
-            status: logoData.status || "completed",
-            logoType: logoData.logoDesign?.title || "Custom Design",
-            desc: logoData.desc || ""
+
+        try {
+          const logosQuery = query(collection(db, "users", userEmail, "logos"));
+          const logosSnapshot = await getDocs(logosQuery);
+
+          logosSnapshot.forEach((doc) => {
+            const logoData = doc.data();
+            const timestampFromId = new Date(parseInt(doc.id));
+            logos.push({
+              id: doc.id,
+              title: logoData.title || "Untitled Logo",
+              previewUrl: logoData.image,
+              createdAt: isNaN(timestampFromId)
+                ? logoData.createdAt?.toDate?.()
+                  ? logoData.createdAt.toDate().toISOString()
+                  : new Date().toISOString()
+                : timestampFromId.toISOString(),
+              userName: userData.name || "Unknown User",
+              userEmail: userEmail,
+              logoType: logoData.title?.split(" ")[0] || "Custom Design",
+              desc: logoData.desc || "",
+            });
           });
-        });
-      });
-      
-      await Promise.all(logosPromises);
-      
+        } catch (error) {
+          console.error(`Error fetching logos for user ${userEmail}:`, error);
+        }
+      }
+
       logos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setRecentLogos(logos.slice(0, 4));
+      const recentLogosList = logos.slice(0, 4);
+      setRecentLogos(recentLogosList);
       
-      analyzeLogoTypes(logos);
+      // Analyze logo types
+      const logoTypesData = analyzeLogoTypes(logos);
+      setLogoTypes(logoTypesData);
       
+      // Cache the data
+      updateCachedData(CACHE_KEYS.RECENT_LOGOS, {
+        recentLogos: recentLogosList,
+        logoTypes: logoTypesData,
+        allLogos: logos
+      });
+
       return logos;
     } catch (error) {
       console.error("Error fetching logos:", error);
@@ -156,34 +161,42 @@ export default function AdminDashboard() {
       return [];
     }
   };
-  
+
   const analyzeLogoTypes = (logos) => {
     const logoTypeCount = {};
-    
-    logos.forEach(logo => {
+
+    logos.forEach((logo) => {
       const logoType = logo.logoType || "Other";
       logoTypeCount[logoType] = (logoTypeCount[logoType] || 0) + 1;
     });
-    
-    const logoTypesArray = Object.entries(logoTypeCount).map(([name, count]) => ({
-      name,
-      count
-    })).sort((a, b) => b.count - a.count);
-    
-    setLogoTypes(logoTypesArray);
+
+    const logoTypesArray = Object.entries(logoTypeCount)
+      .map(([name, count]) => ({
+        name,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    return logoTypesArray;
   };
-  
-  const fetchRecentUsers = async () => {
+
+  const fetchRecentUsers = async (forceRefresh = false) => {
+    // Check if we have valid cached data and don't need to refresh
+    if (!forceRefresh && isCacheValid(CACHE_KEYS.RECENT_USERS)) {
+      setRecentUsers(cachedData[CACHE_KEYS.RECENT_USERS]);
+      return cachedData[CACHE_KEYS.RECENT_USERS];
+    }
+    
     const usersQuery = query(
       collection(db, "users"),
       orderBy("createdAt", "desc"),
       limit(4)
     );
-    
+
     const usersSnapshot = await getDocs(usersQuery);
     const users = [];
-    
-    usersSnapshot.forEach(doc => {
+
+    usersSnapshot.forEach((doc) => {
       const userData = doc.data();
       users.push({
         email: doc.id,
@@ -191,305 +204,334 @@ export default function AdminDashboard() {
         role: userData.role || "member",
         status: userData.status || "active",
         credits: userData.credits || 0,
-        createdAt: userData.createdAt?.toDate?.() 
-          ? userData.createdAt.toDate().toISOString() 
+        createdAt: userData.createdAt?.toDate?.()
+          ? userData.createdAt.toDate().toISOString()
           : new Date().toISOString(),
-        lastLogin: userData.lastLogin?.toDate?.() 
-          ? userData.lastLogin.toDate().toISOString() 
+        lastLogin: userData.lastLogin?.toDate?.()
+          ? userData.lastLogin.toDate().toISOString()
           : null,
-        totalLogos: userData.totalLogos || 0
+        totalLogos: userData.totalLogos || 0,
       });
     });
-    
+
     setRecentUsers(users);
+    
+    // Cache the data
+    updateCachedData(CACHE_KEYS.RECENT_USERS, users);
+    
     return users;
   };
-  
-  const fetchRecentTransactions = async () => {
-    const transactionsQuery = query(
-      collection(db, "transactions"),
-      orderBy("createdAt", "desc"),
-      limit(4)
-    );
-    
-    const transactionsSnapshot = await getDocs(transactionsQuery);
-    const transactions = [];
-    
-    for (const doc of transactionsSnapshot.docs) {
-      const transactionData = doc.data();
-      const packageInfo = creditPackages.find(pkg => 
-        pkg.credits === transactionData.credits || 
-        pkg.name === transactionData.packageName
-      ) || creditPackages[0];
-      
-      transactions.push({
-        id: doc.id,
-        user: transactionData.userName || "Unknown User",
-        userEmail: transactionData.userEmail || "",
-        amount: transactionData.amount || 0,
-        credits: transactionData.credits || 0,
-        package: transactionData.packageName || packageInfo.name,
-        packageImage: packageInfo.image,
-        date: transactionData.createdAt?.toDate?.() 
-          ? transactionData.createdAt.toDate().toISOString() 
-          : new Date().toISOString(),
-        status: transactionData.status || "completed"
-      });
+
+  const fetchRecentTransactions = async (forceRefresh = false) => {
+    // Check if we have valid cached data and don't need to refresh
+    if (!forceRefresh && isCacheValid(CACHE_KEYS.RECENT_TRANSACTIONS)) {
+      setRecentTransactions(cachedData[CACHE_KEYS.RECENT_TRANSACTIONS]);
+      return;
     }
-    
-    setRecentTransactions(transactions);
-  };
   
-  const fetchStatistics = async (startDate, previousStartDate) => {
-    const currentStats = await getPeriodStats(startDate);
-    const previousStats = await getPeriodStats(previousStartDate, startDate);
-    
-    setStatistics({
-      revenue: currentStats.revenue,
-      previousRevenue: previousStats.revenue,
-      logosCreated: currentStats.logosCreated,
-      previousLogos: previousStats.logosCreated,
-      newUsers: currentStats.newUsers,
-      previousUsers: previousStats.newUsers,
-      creditsPurchased: currentStats.creditsPurchased,
-      previousCredits: previousStats.creditsPurchased
-    });
+    try {
+      const transactions = [];
+      const usersSnapshot = await getDocs(collection(db, "users"));
+
+      for (const userDoc of usersSnapshot.docs) {
+        const userEmail = userDoc.id;
+        const userData = userDoc.data();
+
+        try {
+          const transactionsQuery = query(
+            collection(db, "users", userEmail, "transactions"),
+            orderBy("date", "desc"),
+            limit(5)
+          );
+
+          const transactionsSnapshot = await getDocs(transactionsQuery);
+
+          transactionsSnapshot.forEach((doc) => {
+            const transactionData = doc.data();
+
+            // Simply get the package image based on the package name
+            let packageImage =
+              "/buy-credits-logo-imgs/standard-package-logo.png"; // Default image
+
+            // Match package name with the corresponding image
+            if (transactionData.package === "Basic Package") {
+              packageImage = "/buy-credits-logo-imgs/basic-package-logo.png";
+            } else if (transactionData.package === "Standard Package") {
+              packageImage = "/buy-credits-logo-imgs/standard-package-logo.png";
+            } else if (transactionData.package === "Professional Package") {
+              packageImage =
+                "/buy-credits-logo-imgs/professional-package-logo.png";
+            } else if (transactionData.package === "Advanced Package") {
+              packageImage = "/buy-credits-logo-imgs/advanced-package-logo.png";
+            }
+
+            const price = transactionData.price || "0.00";
+            const priceNumeric =
+              typeof price === "string"
+                ? parseFloat(price.replace(/[^0-9.]/g, ""))
+                : typeof price === "number"
+                ? price
+                : 0;
+
+            // Use document ID as timestamp if needed
+            const timestampFromId = new Date(parseInt(doc.id));
+
+            transactions.push({
+              id: doc.id,
+              user: userData.name || "Unknown User",
+              userEmail: userEmail,
+              amount: priceNumeric,
+              credits: transactionData.credits || 0,
+              package: transactionData.package || "Standard Package",
+              packageImage: packageImage,
+              date: transactionData.date?.toDate?.()
+                ? transactionData.date.toDate().toISOString()
+                : isNaN(timestampFromId)
+                ? new Date().toISOString()
+                : timestampFromId.toISOString(),
+              status: transactionData.status || "completed",
+            });
+          });
+        } catch (error) {
+          console.error(
+            `Error fetching transactions for user ${userEmail}:`,
+            error
+          );
+        }
+      }
+
+      // Sort all transactions by date (newest first)
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const recentTransactionsList = transactions.slice(0, 4);
+      setRecentTransactions(recentTransactionsList);
+      
+      // Cache the data
+      updateCachedData(CACHE_KEYS.RECENT_TRANSACTIONS, recentTransactionsList);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      setRecentTransactions([]);
+    }
   };
-  
-  const getPeriodStats = async (startDate, endDate = null) => {
+
+  const fetchStatistics = async () => {
+    try {
+      // Lấy tổng số lượng thay vì phụ thuộc vào khoảng thời gian
+      const totalStats = await getTotalStats();
+      
+      const newStats = {
+        revenue: totalStats.revenue,
+        logosCreated: totalStats.logosCreated,
+        newUsers: totalStats.newUsers,
+        creditsPurchased: totalStats.creditsPurchased,
+      };
+      
+      setStatistics(newStats);
+      
+      // Cache the data
+      updateCachedData(CACHE_KEYS.STATISTICS, newStats);
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+    }
+  };
+
+  const getTotalStats = async () => {
     let revenue = 0;
     let logosCreated = 0;
     let newUsers = 0;
     let creditsPurchased = 0;
-    
+
     try {
-      const transactionsQuery = endDate 
-        ? query(
-            collection(db, "transactions"),
-            where("createdAt", ">=", startDate),
-            where("createdAt", "<", endDate)
-          )
-        : query(
-            collection(db, "transactions"),
-            where("createdAt", ">=", startDate)
-          );
-      
-      const transactionsSnapshot = await getDocs(transactionsQuery);
-      
-      transactionsSnapshot.forEach(doc => {
-        const data = doc.data();
-        revenue += data.amount || 0;
-        creditsPurchased += data.credits || 0;
-      });
-      
-      const usersQuery = endDate
-        ? query(
-            collection(db, "users"),
-            where("createdAt", ">=", startDate),
-            where("createdAt", "<", endDate)
-          )
-        : query(
-            collection(db, "users"),
-            where("createdAt", ">=", startDate)
-          );
-      
-      const usersSnapshot = await getCountFromServer(usersQuery);
+      // Lấy tổng số người dùng
+      const usersSnapshot = await getCountFromServer(collection(db, "users"));
       newUsers = usersSnapshot.data().count;
       
+      // Lấy dữ liệu từ subcollection "transactions" của từng user
       const allUsersSnapshot = await getDocs(collection(db, "users"));
       
-      const logoCountPromises = allUsersSnapshot.docs.map(async (userDoc) => {
+      // Tính tổng doanh thu và credits đã bán từ transactions của mỗi user
+      for (const userDoc of allUsersSnapshot.docs) {
         const userEmail = userDoc.id;
         
-        const logosQuery = endDate
-          ? query(
-              collection(db, "users", userEmail, "logos"),
-              where("createdAt", ">=", startDate),
-              where("createdAt", "<", endDate)
-            )
-          : query(
-              collection(db, "users", userEmail, "logos"),
-              where("createdAt", ">=", startDate)
-            );
+        // Đếm số logo đã tạo cho user này
+        try {
+          const logosSnapshot = await getCountFromServer(collection(db, "users", userEmail, "logos"));
+          logosCreated += logosSnapshot.data().count;
+        } catch (error) {
+          console.error(`Error counting logos for user ${userEmail}:`, error);
+        }
         
-        const logosSnapshot = await getCountFromServer(logosQuery);
-        return logosSnapshot.data().count;
-      });
-      
-      const logoCounts = await Promise.all(logoCountPromises);
-      logosCreated = logoCounts.reduce((total, count) => total + count, 0);
-      
+        // Tính tổng doanh thu và credits từ các transactions của user này
+        try {
+          const transactionsSnapshot = await getDocs(collection(db, "users", userEmail, "transactions"));
+          
+          transactionsSnapshot.forEach((doc) => {
+            const transactionData = doc.data();
+            
+            // Tính doanh thu
+            const price = transactionData.price || 0;
+            const priceNumeric =
+              typeof price === "string"
+                ? parseFloat(price.replace(/[^0-9.]/g, ""))
+                : typeof price === "number"
+                ? price
+                : 0;
+                
+            revenue += priceNumeric;
+            
+            // Tính tổng credits
+            creditsPurchased += transactionData.credits || 0;
+          });
+        } catch (error) {
+          console.error(`Error fetching transactions for user ${userEmail}:`, error);
+        }
+      }
+
       return { revenue, logosCreated, newUsers, creditsPurchased };
     } catch (error) {
-      console.error("Error getting period stats:", error);
+      console.error("Error getting total stats:", error);
       return { revenue: 0, logosCreated: 0, newUsers: 0, creditsPurchased: 0 };
     }
   };
+
+  const fetchPackageDistribution = async (forceRefresh = false) => {
+    // Check if we have valid cached data and don't need to refresh
+    if (!forceRefresh && isCacheValid(CACHE_KEYS.PACKAGE_COUNTS)) {
+      setPackageCounts(cachedData[CACHE_KEYS.PACKAGE_COUNTS]);
+      return;
+    }
   
-  const fetchPackageDistribution = async () => {
     const packageCount = {};
-    
-    const transactionsQuery = query(
-      collection(db, "transactions"),
-      limit(100)
-    );
-    
+
+    const transactionsQuery = query(collection(db, "transactions"), limit(100));
+
     const transactionsSnapshot = await getDocs(transactionsQuery);
-    
-    transactionsSnapshot.forEach(doc => {
+
+    transactionsSnapshot.forEach((doc) => {
       const transactionData = doc.data();
       let packageName = transactionData.packageName;
-      
+
       if (!packageName) {
-        const matchingPackage = creditPackages.find(pkg => 
-          pkg.credits === transactionData.credits
+        const matchingPackage = creditPackages.find(
+          (pkg) => pkg.credits === transactionData.credits
         );
         packageName = matchingPackage ? matchingPackage.name : "Other";
       }
-      
+
       packageCount[packageName] = (packageCount[packageName] || 0) + 1;
     });
-    
-    const packageCountArray = Object.entries(packageCount).map(([name, count]) => ({
-      name,
-      count
-    })).sort((a, b) => b.count - a.count);
-    
+
+    const packageCountArray = Object.entries(packageCount)
+      .map(([name, count]) => ({
+        name,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+
     setPackageCounts(packageCountArray);
+    
+    // Cache the package data
+    updateCachedData(CACHE_KEYS.PACKAGE_COUNTS, packageCountArray);
   };
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
-  
-  const getTimeRangePeriod = () => {
-    switch(timeRange) {
-      case "month":
-        return "this month";
-      case "year":
-        return "this year";
-      default:
-        return "this week";
-    }
-  };
-  
+
   const getStatCards = () => {
-    const revenueChange = statistics.previousRevenue 
-      ? ((statistics.revenue - statistics.previousRevenue) / statistics.previousRevenue) * 100 
-      : 0;
-      
-    const logosChange = statistics.previousLogos 
-      ? ((statistics.logosCreated - statistics.previousLogos) / statistics.previousLogos) * 100 
-      : 0;
-      
-    const usersChange = statistics.previousUsers 
-      ? ((statistics.newUsers - statistics.previousUsers) / statistics.previousUsers) * 100 
-      : 0;
-      
-    const creditsChange = statistics.previousCredits 
-      ? ((statistics.creditsPurchased - statistics.previousCredits) / statistics.previousCredits) * 100 
-      : 0;
-    
     return [
       {
         title: "Total Revenue",
-        value: `$${statistics.revenue.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+        value: `$${statistics.revenue.toLocaleString("en-US", {
+          maximumFractionDigits: 2,
+        })}`,
         icon: DollarSign,
-        change: revenueChange.toFixed(1),
         link: "/admin/dashboard/statistics",
-        color: "from-blue-500 to-indigo-500"
+        color: "from-blue-500 to-indigo-500",
       },
       {
         title: "Logos Created",
         value: statistics.logosCreated,
         icon: ImageIcon,
-        change: logosChange.toFixed(1),
         link: "/admin/dashboard/logos",
-        color: "from-pink-500 to-rose-500"
+        color: "from-pink-500 to-rose-500",
       },
       {
-        title: "New Users",
+        title: "Total Users",
         value: statistics.newUsers,
         icon: Users,
-        change: usersChange.toFixed(1),
         link: "/admin/dashboard/users",
-        color: "from-green-500 to-emerald-500"
+        color: "from-green-500 to-emerald-500",
       },
       {
         title: "Credits Sold",
-        value: statistics.creditsPurchased.toLocaleString('en-US'),
+        value: statistics.creditsPurchased.toLocaleString("en-US"),
         icon: CreditCard,
-        change: creditsChange.toFixed(1),
         link: "/admin/dashboard/credits/packages",
-        color: "from-orange-500 to-amber-500"
+        color: "from-orange-500 to-amber-500",
       },
     ];
   };
-  
+
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard Overview</h1>
-        <TimeRangeSelector 
-          timeRange={timeRange}
-          setTimeRange={setTimeRange}
-          isLoading={isLoading}
-          onRefresh={fetchData}
-        />
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Dashboard Overview
+        </h1>
+        <Button
+          onClick={fetchData}
+          disabled={isLoading}
+          className="flex items-center gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Refresh
+        </Button>
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {getStatCards().map((card, index) => (
-          <StatCard 
+          <StatCard
             key={index}
             title={card.title}
             value={card.value}
             icon={card.icon}
-            change={card.change}
             link={card.link}
             color={card.color}
-            timeRange={timeRange}
           />
         ))}
       </div>
-      
-      <div className="grid gap-4 md:grid-cols-2 mt-8">
-        <LogoTypeChart 
-          logoTypes={logoTypes} 
-          isLoading={isLoading} 
-        />
-        
-        <CreditPackageGrid 
+
+      <div className="grid gap-6 md:grid-cols-2 mt-8">
+        <LogoTypeChart logoTypes={logoTypes} isLoading={isLoading} />
+
+        <CreditPackageGrid
           creditPackages={creditPackages}
           packageCounts={packageCounts}
           isLoading={isLoading}
         />
       </div>
-      
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-8">
-        <RecentLogos 
-          recentLogos={recentLogos} 
-          isLoading={isLoading} 
-          formatDate={formatDate} 
-        />
-        
-        <RecentUsers 
-          recentUsers={recentUsers}
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
+        <RecentLogos
+          recentLogos={recentLogos}
           isLoading={isLoading}
+          formatDate={formatDate}
         />
-        
-        <RecentTransactions 
+
+        <RecentUsers recentUsers={recentUsers} isLoading={isLoading} />
+
+        <RecentTransactions
           recentTransactions={recentTransactions}
           isLoading={isLoading}
         />
       </div>
-    </>
+    </div>
   );
 }

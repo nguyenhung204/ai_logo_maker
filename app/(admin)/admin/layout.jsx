@@ -5,6 +5,7 @@ import { redirect, notFound } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { UserDetailContext } from "@/app/(main)/_context/UserDetailContext";
 import { useContext } from "react";
+import { AdminDataProvider } from "./_context/AdminDataContext";
 
 export default function AdminLayout({ children }) {
   const { isSignedIn, isLoaded } = useUser();
@@ -19,6 +20,7 @@ export default function AdminLayout({ children }) {
       notFound();
     }
   }, [isSignedIn, isLoaded, userDetail, isLoading]);
+  
   if (!isLoaded || isLoading || !userDetail) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -31,5 +33,9 @@ export default function AdminLayout({ children }) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <AdminDataProvider>
+      {children}
+    </AdminDataProvider>
+  );
 }
