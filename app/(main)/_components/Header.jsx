@@ -132,8 +132,8 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="Logo"
-              width={128}
-              height={128}
+              width={72}
+              height={72}
               priority
             />
           </Link>
