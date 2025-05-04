@@ -190,7 +190,7 @@ export default function AdminDashboard() {
     const usersQuery = query(
       collection(db, "users"),
       orderBy("createdAt", "desc"),
-      limit(4)
+      limit(5)
     );
 
     const usersSnapshot = await getDocs(usersQuery);
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
           const transactionsQuery = query(
             collection(db, "users", userEmail, "transactions"),
             orderBy("date", "desc"),
-            limit(5)
+            limit(4)
           );
 
           const transactionsSnapshot = await getDocs(transactionsQuery);
@@ -473,7 +473,7 @@ export default function AdminDashboard() {
         title: "Credits Sold",
         value: statistics.creditsPurchased.toLocaleString("en-US"),
         icon: CreditCard,
-        link: "/admin/dashboard/credits/packages",
+        link: "/admin/dashboard/transactions",
         color: "from-orange-500 to-amber-500",
       },
     ];

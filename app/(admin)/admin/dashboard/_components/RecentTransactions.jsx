@@ -93,12 +93,6 @@ export default function RecentTransactions({ recentTransactions, isLoading }) {
                   <span className="text-xs text-muted-foreground">
                     {formatDate(transaction.date)}
                   </span>
-                  <Link 
-                    href={`/admin/transactions/${transaction.id}`}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    View details
-                  </Link>
                 </div>
               </div>
             ))}
