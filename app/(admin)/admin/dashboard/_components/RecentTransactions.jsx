@@ -1,79 +1,112 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { RefreshCw } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { RefreshCw, DollarSign, CreditCard, Package } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function RecentTransactions({ recentTransactions, isLoading }) {
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const formatAmount = (amount) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(amount);
+  };
+  
+
   return (
-    <Card className="md:col-span-2 lg:col-span-1 overflow-hidden">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-medium">Recent Transactions</CardTitle>
-          <Link href="/admin/dashboard/transactions" className="text-xs text-primary hover:underline">
-            View all
-          </Link>
-        </div>
-        <CardDescription>Latest credit purchase transactions</CardDescription>
+    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300">
+      <CardHeader className="pb-2 border-b">
+        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+          <DollarSign className="h-5 w-5 text-primary" />
+          <span>Recent Transactions</span>
+        </CardTitle>
+        <CardDescription>Latest credit purchases</CardDescription>
       </CardHeader>
       <CardContent className="p-0">
         {isLoading ? (
-          <div className="p-6 text-center">
-            <RefreshCw className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
-            <p className="text-sm text-muted-foreground mt-2">Loading transactions...</p>
+          <div className="p-8 flex justify-center items-center">
+            <RefreshCw className="h-8 w-8 animate-spin text-primary/60" />
           </div>
         ) : recentTransactions.length > 0 ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Package</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {recentTransactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell>
-                    <div className="font-medium">{transaction.user}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {new Date(transaction.date).toLocaleDateString()}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded bg-muted/20 flex items-center justify-center overflow-hidden">
-                        <img 
-                          src={transaction.packageImage} 
-                          alt={transaction.package} 
-                          className="h-full w-full object-cover"
-                        />
+          <div className="divide-y">
+            {recentTransactions.map((transaction, index) => (
+              <div key={index} className="p-4 hover:bg-muted/30 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="relative h-12 w-12 rounded-md overflow-hidden border bg-muted/20 flex-shrink-0">
+                    {transaction.packageImage ? (
+                      <Image
+                        src={transaction.packageImage}
+                        alt={transaction.package || "Package"}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 48px"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-muted">
+                        <Package className="h-5 w-5 text-muted-foreground" />
                       </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start">
                       <div>
-                        <Badge variant="outline">{transaction.package}</Badge>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {transaction.credits} credits
-                        </div>
+                        <h3 className="font-medium text-sm" title={transaction.package}>
+                          {transaction.package || "Standard Package"}
+                        </h3>
+                        <p className="text-xs text-muted-foreground truncate">
+                          by {transaction.user || 'Unknown User'}
+                        </p>
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    ${transaction.amount.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                    <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="h-3.5 w-3.5" />
+                        <span>{formatAmount(transaction.amount || 0)}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <CreditCard className="h-3.5 w-3.5" />
+                        <span>{transaction.credits || 0} credits</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-3 flex justify-between items-center">
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(transaction.date)}
+                  </span>
+                  <Link 
+                    href={`/admin/transactions/${transaction.id}`}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    View details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            No transactions yet
+          <div className="text-center py-12 text-muted-foreground">
+            <DollarSign className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
+            <p>No transactions have been made yet</p>
           </div>
         )}
       </CardContent>

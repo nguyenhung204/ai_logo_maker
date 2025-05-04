@@ -4,19 +4,14 @@ import Link from "next/link";
 import {
   Users,
   ShoppingCart,
-  Package,
   X,
   Home,
   ChevronDown,
   ChevronUp,
   LayoutDashboard,
-  FileText,
   CreditCard,
   Image,
-  Settings,
   BarChart2,
-  Globe,
-  Cpu
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -62,8 +57,8 @@ export function Sidebar({ isOpen, onClose }) {
           <Link
             href="/admin/dashboard"
             className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard") 
-                ? "bg-accent text-accent-foreground" 
+              isActive("/admin/dashboard")
+                ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -80,72 +75,31 @@ export function Sidebar({ isOpen, onClose }) {
           <Link
             href="/admin/dashboard/users"
             className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard/users") 
-                ? "bg-accent text-accent-foreground" 
+              isActive("/admin/dashboard/users")
+                ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Users className="h-4 w-4" />
             <span>User Management</span>
           </Link>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setOpenCredits(!openCredits)}
-              className="w-full flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <CreditCard className="h-4 w-4" />
-              <span>Credits Management</span>
-              {openCredits ? (
-                <ChevronUp className="ml-auto h-4 w-4" />
-              ) : (
-                <ChevronDown className="ml-auto h-4 w-4" />
-              )}
-            </button>
-            {openCredits && (
-              <div className="pl-4 mt-1 space-y-1">
-                <Link
-                  href="/admin/dashboard/credits/packages"
-                  className={`block px-3 py-2 text-sm ${
-                    isActive("/admin/dashboard/credits/packages") 
-                      ? "text-foreground font-medium" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Credit Packages
-                </Link>
-                <Link
-                  href="/admin/dashboard/credits/promotions"
-                  className={`block px-3 py-2 text-sm ${
-                    isActive("/admin/dashboard/credits/promotions") 
-                      ? "text-foreground font-medium" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Promotions
-                </Link>
-              </div>
-            )}
-          </div>
-
           <Link
             href="/admin/dashboard/logos"
             className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard/logos") 
-                ? "bg-accent text-accent-foreground" 
+              isActive("/admin/dashboard/logos")
+                ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Image className="h-4 w-4" />
             <span>Logo Management</span>
           </Link>
-          
+
           <Link
             href="/admin/dashboard/transactions"
             className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard/transactions") 
-                ? "bg-accent text-accent-foreground" 
+              isActive("/admin/dashboard/transactions")
+                ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -156,65 +110,13 @@ export function Sidebar({ isOpen, onClose }) {
           <Link
             href="/admin/dashboard/statistics"
             className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard/statistics") 
-                ? "bg-accent text-accent-foreground" 
+              isActive("/admin/dashboard/statistics")
+                ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <BarChart2 className="h-4 w-4" />
             <span>Statistics</span>
-          </Link>
-          
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setOpenContent(!openContent)}
-              className="w-full flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Globe className="h-4 w-4" />
-              <span>Website Content</span>
-              {openContent ? (
-                <ChevronUp className="ml-auto h-4 w-4" />
-              ) : (
-                <ChevronDown className="ml-auto h-4 w-4" />
-              )}
-            </button>
-            {openContent && (
-              <div className="pl-4 mt-1 space-y-1">
-                <Link
-                  href="/admin/dashboard/content/pages"
-                  className={`block px-3 py-2 text-sm ${
-                    isActive("/admin/dashboard/content/pages") 
-                      ? "text-foreground font-medium" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Page Content
-                </Link>
-                <Link
-                  href="/admin/dashboard/content/testimonials"
-                  className={`block px-3 py-2 text-sm ${
-                    isActive("/admin/dashboard/content/testimonials") 
-                      ? "text-foreground font-medium" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Testimonials
-                </Link>
-              </div>
-            )}
-          </div>
-          
-          <Link
-            href="/admin/dashboard/ai-model"
-            className={`flex items-center gap-3 rounded-md px-3 py-2 ${
-              isActive("/admin/dashboard/ai-model") 
-                ? "bg-accent text-accent-foreground" 
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Cpu className="h-4 w-4" />
-            <span>AI Model Settings</span>
           </Link>
         </nav>
       </div>
