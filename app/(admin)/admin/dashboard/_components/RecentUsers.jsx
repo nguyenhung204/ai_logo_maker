@@ -96,15 +96,6 @@ export default function RecentUsers({ recentUsers, isLoading }) {
                     </div>
                   </div>
                 </div>
-
-                <div className="mt-3 flex justify-end">
-                  <Link
-                    href={`/admin/users/${encodeURIComponent(user.email)}`}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    View profile
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
