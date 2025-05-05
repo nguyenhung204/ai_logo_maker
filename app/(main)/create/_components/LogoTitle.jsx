@@ -8,19 +8,36 @@ import { useSearchParams } from "next/navigation";
 function LogoTitleContent({ onHandleInputChange, formData }) {
   const searchParams = useSearchParams();
   const [title, setTitle] = useState(formData?.title || "");
+  const [error, setError] = useState("");
+
+  // Hàm để kiểm tra và xử lý các ký tự đặc biệt
+  const validateInput = (input) => {
+    // Loại bỏ hoặc thay thế các ký tự đặc biệt có thể gây ra vấn đề
+    const sanitized = input.replace(/[\/\\%]/g, "-");
+    return sanitized;
+  };
 
   useEffect(() => {
     const initialTitle = searchParams.get("title") ?? "";
     if (initialTitle && !formData?.title) {
-      setTitle(initialTitle);
-      onHandleInputChange(initialTitle);
+      const sanitizedTitle = validateInput(initialTitle);
+      setTitle(sanitizedTitle);
+      onHandleInputChange(sanitizedTitle);
     }
   }, []);
 
   const handleChange = (e) => {
-    const newValue = e.target.value;
-    setTitle(newValue);
-    onHandleInputChange(newValue);
+    const rawValue = e.target.value;
+    const sanitizedValue = validateInput(rawValue);
+    
+    // Hiện thông báo nếu giá trị bị thay đổi sau khi làm sạch
+    if (rawValue !== sanitizedValue) {
+      setError("Một số ký tự đặc biệt đã được thay thế để đảm bảo tương thích");
+      setTimeout(() => setError(""), 3000);
+    }
+    
+    setTitle(sanitizedValue);
+    onHandleInputChange(sanitizedValue);
   };
 
   return (
@@ -36,6 +53,7 @@ function LogoTitleContent({ onHandleInputChange, formData }) {
         value={title}
         onChange={handleChange}
       />
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

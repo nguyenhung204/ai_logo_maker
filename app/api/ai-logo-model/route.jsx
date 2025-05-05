@@ -16,8 +16,20 @@ export async function POST(req) {
       );
     }
 
+    // Hàm làm sạch đầu vào để đảm bảo không có ký tự đặc biệt gây lỗi
+    const sanitizeInput = (input) => {
+      if (!input) return "";
+      // Thay thế các ký tự đặc biệt có thể gây vấn đề
+      return input.replace(/[\/\\%]/g, "-");
+    };
+    
+    // Áp dụng làm sạch cho dữ liệu đầu vào
+    const sanitizedPrompt = sanitizeInput(prompt);
+    const sanitizedTitle = sanitizeInput(title);
+    const sanitizedDesc = sanitizeInput(desc);
+
     // 🧠 Gọi Gemini tạo prompt
-    const result = await AILogoPrompt.sendMessage(prompt);
+    const result = await AILogoPrompt.sendMessage(sanitizedPrompt);
     const data = JSON.parse(result.response.text());
 
     // 👇 Encode form params
@@ -47,8 +59,8 @@ export async function POST(req) {
     try {
       await setDoc(doc(db, "users", email, "logos", Date.now().toString()), {
         image: base64Image,
-        title: title,
-        desc: desc,
+        title: sanitizedTitle,
+        desc: sanitizedDesc,
       });
     } catch (e) {
       console.log(e);

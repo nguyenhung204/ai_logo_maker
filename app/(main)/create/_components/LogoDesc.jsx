@@ -4,11 +4,27 @@ import Lookup from "@/app/(main)/_data/Lookup";
 
 function LogoDesc({ onHandleInputChange, formData }) {
   const [desc, setDesc] = useState(formData?.desc || "");
+  const [error, setError] = useState("");
+
+  // Hàm để kiểm tra và xử lý các ký tự đặc biệt
+  const validateInput = (input) => {
+    // Loại bỏ hoặc thay thế các ký tự đặc biệt có thể gây ra vấn đề
+    const sanitized = input.replace(/[\/\\%]/g, "-");
+    return sanitized;
+  };
 
   const handleChange = (e) => {
-    const newValue = e.target.value;
-    setDesc(newValue);
-    onHandleInputChange(newValue);
+    const rawValue = e.target.value;
+    const sanitizedValue = validateInput(rawValue);
+    
+    // Hiện thông báo nếu giá trị bị thay đổi sau khi làm sạch
+    if (rawValue !== sanitizedValue) {
+      setError("Một số ký tự đặc biệt đã được thay thế để đảm bảo tương thích");
+      setTimeout(() => setError(""), 3000);
+    }
+    
+    setDesc(sanitizedValue);
+    onHandleInputChange(sanitizedValue);
   };
 
   return (
@@ -25,6 +41,7 @@ function LogoDesc({ onHandleInputChange, formData }) {
         value={desc}
         onChange={handleChange}
       />
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

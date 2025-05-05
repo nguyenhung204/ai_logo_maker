@@ -47,13 +47,24 @@ const GenerateLogo = () => {
     }
   }, [formData, logoGenerated, userDetail]);
 
+  const validateInput = (input) => {
+    if (!input) return "";
+    const sanitized = input.replace(/[\/\\%]/g, "-");
+    return sanitized;
+  };
+
   const generateAILogo = async () => {
-    const PROMPT = Prompt.LOGO_PROMPT.replace("{logoTitle}", formData?.title)
-      .replace("{logoDesc}", formData?.desc)
-      .replace("{logoColor}", formData?.palette)
-      .replace("{logoDesign}", formData?.design?.title)
-      .replace("{logoIdea}", formData.idea || "Let AI Select the best idea")
-      .replace("{logoPrompt}", formData?.design?.prompt);
+    const safeTitle = validateInput(formData?.title || "");
+    const safeDesc = validateInput(formData?.desc || "");
+    const safeIdea = validateInput(formData.idea || "Let AI Select the best idea");
+    const safePrompt = validateInput(formData?.design?.prompt || "");
+    
+    const PROMPT = Prompt.LOGO_PROMPT.replace("{logoTitle}", safeTitle)
+      .replace("{logoDesc}", safeDesc)
+      .replace("{logoColor}", formData?.palette || "")
+      .replace("{logoDesign}", formData?.design?.title || "")
+      .replace("{logoIdea}", safeIdea)
+      .replace("{logoPrompt}", safePrompt);
 
     try {
       setLoading(true);

@@ -10,6 +10,15 @@ function LogoIdea({ formData, onHandleInputChange }) {
   const [ideas, setIdeas] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(formData?.logo_prompts);
+  const [error, setError] = useState("");
+  
+  // Hàm để kiểm tra và xử lý các ký tự đặc biệt
+  const validateInput = (input) => {
+    if (!input) return "";
+    // Loại bỏ hoặc thay thế các ký tự đặc biệt có thể gây ra vấn đề
+    const sanitized = input.replace(/[\/\\%]/g, "-");
+    return sanitized;
+  };
 
   useEffect(() => {
     generateLogoDesignIdea();
@@ -17,13 +26,19 @@ function LogoIdea({ formData, onHandleInputChange }) {
 
   const generateLogoDesignIdea = async () => {
     setLoading(true);
+    
+    // Làm sạch dữ liệu trước khi thay thế
+    const safeTitle = validateInput(formData?.title || "");
+    const safeDesc = validateInput(formData?.desc || "");
+    const safePrompt = validateInput(formData?.design?.prompt || "");
+    
     const PROMPT = Prompt.DESIGN_IDEA_PROMPT.replace(
       "{logoType}",
-      formData?.design.title
+      formData?.design?.title || ""
     )
-      .replace("{logoTitle}", formData?.title)
-      .replace("{logoDesc}", formData?.desc)
-      .replace("{logoPrompt}", formData?.design.prompt);
+      .replace("{logoTitle}", safeTitle)
+      .replace("{logoDesc}", safeDesc)
+      .replace("{logoPrompt}", safePrompt);
 
     const result = await axios.post("/api/ai-design-ideas", {
       prompt: PROMPT,
