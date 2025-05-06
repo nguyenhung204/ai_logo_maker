@@ -32,11 +32,33 @@ Một ứng dụng tạo logo tự động sử dụng trí tuệ nhân tạo (A
 
 ---
 
-## 📷 Demo
+## 🌐 Giao diện
 
-![Logo Demo 1](./public/logo-generated-imgs/img-4.png)
+<div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+  <img src="./public/read-me-imgs/home-page-view.png" alt="1" style="width:45%;">
+  <img src="./public/read-me-imgs/buy-credits-page-view.png" alt="2" style="width:45%;">
+  <img src="./public/read-me-imgs/admin-dashboard-page-view.png" alt="3" style="width:45%;">
+  <img src="./public/read-me-imgs/admin-statistics-page-view.png" alt="4" style="width:45%;">
+</div>
 
-![Logo Demo 2](./public/logo-generated-imgs/img-5.png)
+---
+
+## 🌐 Cây điều hướng
+
+<div style="text-align: center;">
+  <img src="./public/read-me-imgs/routing_tree.png" alt="Cây điều hướng" style="width:80%;">
+</div>
+
+---
+
+## 📷 Demo AI Generated Logo
+
+<div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+  <img src="./public/logo-generated-imgs/img-4.png" alt="Logo Demo 1" style="width:24%;">
+  <img src="./public/logo-generated-imgs/img-5.png" alt="Logo Demo 2" style="width:24%;">
+  <img src="./public/logo-generated-imgs/img-6.png" alt="Logo Demo 3" style="width:24%;">
+  <img src="./public/logo-generated-imgs/img-7.png" alt="Logo Demo 4" style="width:24%;">
+</div>
 
 ---
 
@@ -65,4 +87,8 @@ NEXT_PUBLIC_FIREBASE_API_KEY=
 
 # RapidAPI Key
 RAPIDAPI_KEY=
+
+# Remove Background API Key
+API_REMOVE_BG_KEY =
+
 ```
