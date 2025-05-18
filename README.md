@@ -35,10 +35,10 @@ Một ứng dụng tạo logo tự động sử dụng trí tuệ nhân tạo (A
 ## 🌐 Giao diện
 
 <div style="text-align: center;">
-  <img src="./public/read-me-imgs/home-page-view.png" alt="1" style="width:45%;">
-  <img src="./public/read-me-imgs/buy-credits-page-view.png" alt="2" style="width:45%;">
-  <img src="./public/read-me-imgs/admin-dashboard-page-view.png" alt="3" style="width:45%;">
-  <img src="./public/read-me-imgs/admin-statistics-page-view.png" alt="4" style="width:45%;">
+  <img src="./public/read-me-imgs/home-page-view.png" alt="1" style="width:48%;">
+  <img src="./public/read-me-imgs/buy-credits-page-view.png" alt="2" style="width:48%;">
+  <img src="./public/read-me-imgs/admin-dashboard-page-view.png" alt="3" style="width:48%;">
+  <img src="./public/read-me-imgs/admin-statistics-page-view.png" alt="4" style="width:48%;">
 </div>
 
 ---
@@ -46,7 +46,7 @@ Một ứng dụng tạo logo tự động sử dụng trí tuệ nhân tạo (A
 ## 🌐 Cây điều hướng
 
 <div style="text-align: center;">
-  <img src="./public/read-me-imgs/routing_tree.png" alt="Cây điều hướng" style="width:80%;">
+  <img src="./public/read-me-imgs/routing_tree.png" alt="Cây điều hướng" style="width:100%;">
 </div>
 
 ---
