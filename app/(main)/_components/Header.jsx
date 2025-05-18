@@ -33,7 +33,6 @@ export default function Header() {
       children: [
         { title: "🖌️ Edit Image", href: "/tools/edit" },
         { title: "🎨 Extract Colors", href: "/tools/extract-color" },
-        { title: "✂️ Remove BG", href: "/tools/remove-bg" },
       ],
     },
     { title: "About", href: "/about" },
@@ -129,13 +128,7 @@ export default function Header() {
         {/* Logo - Left */}
         <div className="flex w-1/4 items-center">
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={72}
-              height={72}
-              priority
-            />
+            <Image src="/logo.png" alt="Logo" width={72} height={72} priority />
           </Link>
         </div>
 
